@@ -27,7 +27,7 @@ export default function TheSlideNav() {
             <a className="navbar-brand mx-4 mb-3">
               <h3 className="text-primary">
                 <FaUserEdit className="fa me-2" />
-                PigJungle
+                LuckNumber
               </h3>
             </a>
           </Link>
@@ -143,11 +143,11 @@ export default function TheSlideNav() {
                 <i className="me-2">
                   <BsFillBagFill/>
                 </i>
-                จัดการออเดอร์
+                จัดการออเดอร์หวย
               </Dropdown.Toggle>
               <Dropdown.Menu className="bg-transparent border-0">
                 <Link id="orderslist" href="/orders/orderslist">
-                  <a className="dropdown-item">รายการสั่งซื้อสินค้า</a>
+                  <a className="dropdown-item">รายการสั่งซื้อหวย</a>
                 </Link>
                 <Link id="orderslist" href="/orders/delivery_list">
                   <a className="dropdown-item">รายการจัดส่งสินค้า</a>
@@ -160,7 +160,7 @@ export default function TheSlideNav() {
                 <i className="me-2">
                   <FaShoppingCart/>
                 </i>
-                จัดการสินค้า
+                จัดการหวย
               </Dropdown.Toggle>
               <Dropdown.Menu className="bg-transparent border-0">
                 <Link id="buttons" href="/products">
