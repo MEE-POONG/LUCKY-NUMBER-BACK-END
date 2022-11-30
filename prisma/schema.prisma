@@ -20,7 +20,7 @@ model User {
   credits    Credit[]
   banks      Banks[]
   lotterys   Lottery[]
-  Orderlotto Orderlotto[]
+  orderlotto Orderlotto[]
 }
 
 model Banks {
