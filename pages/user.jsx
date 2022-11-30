@@ -1,85 +1,49 @@
 import Head from 'next/head';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import IndexPage from "components/layouts/IndexPage";
 import { useRouter } from 'next/router';
 import { Container, Table, Button, Form, OverlayTrigger, Badge, Modal } from 'react-bootstrap';
 import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
+import useAxios from 'axios-hooks'
 
 export default function TransferPage() {
+  const [{ data: usersData }, getUsers] = useAxios({ url: '/api/users' })
 
+  const [{ data: postData, error: errorMessage, loading: userLoading }, executeUser] = useAxios({ url: '/api/users', method: 'POST' }, { manual: true });
 
+  const [{ data: userById , loading: userByIdLoading , error: userByIdError},getUserById] = useAxios({},{ manual: true } )
+  
+  const [{ loading: updateUserLoading, error: updateUserError }, executeUserPut] = useAxios({},{manual: true})
 
-  const data = {
-    users: [
-      {
-        id: "1",
-        image: "images/user.jpg",
-        name: "กัญ 01",
-        email: "gg@gmail.com",
-        tel: "022222222",
-        date: "11/12/2022"
-      },
-      {
-        id: "2",
-        image: "images/user.jpg",
-        name: "กัญ 02",
-        email: "gg@gmail.com",
-        tel: "022222222",
-        date: "11/12/2022"
+  const [{loading: deleteUserLoading , error: deleteUserError},executeUserDelete]= useAxios({},{manual: true})
 
-      },
-      {
-        id: "3",
-        image: "images/user.jpg",
-        name: "กัญ 03",
-        email: "gg@gmail.com",
-        tel: "022222222",
-        date: "11/12/2022"
+  const [username, setUserName] = useState('');
+  const [fname, setFname] = useState('');
+  const [lname, setLname] = useState('');
+  const [tel, setTel] = useState('');
+  const [password, setPassword] = useState('');
 
-      },
-      {
-        id: "4",
-        image: "images/user.jpg",
-        name: "กัญ 04",
-        email: "gg@gmail.com",
-        tel: "022222222",
-        date: "11/12/2022"
+  
+  useEffect(()=>{
+    setUserName(userById?.username)
+    setFname(userById?.fname)
+    setLname(userById?.lname)
+    setTel(userById?.tel)
+    setPassword(userById?.password)
+  },[userById])
 
-      },
-      {
-        id: "5",
-        image: "images/user.jpg",
-        name: "กัญ 05",
-        email: "gg@gmail.com",
-        tel: "022222222",
-        date: "11/12/2022"
+  const [showModalCreate, setShowModalCreate] = useState(false);
+  const [showModalEdit, setShowModalEdit] = useState(false);
 
-      },
-      {
-        id: "6",
-        image: "images/user.jpg",
-        name: "กัญ 06",
-        email: "gg@gmail.com",
-        tel: "022222222",
-        date: "11/12/2022"
+  const ShowModalCreate = () => setShowModalCreate(true);
+  const ShowModalEdit = async (id) => { 
+   await getUserById({url: '/api/users/'+id,method:'GET'});
+    setShowModalEdit(true);
+   }
+  const CloseModal = () => { setShowModalCreate(false), setShowModalEdit(false) };
 
-      }
-    ]
-  }
-
-
-  const [createModal, setCreateModal] = useState(false);
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [editModal, setEditModal] = useState(false);
-
-  const createClose = () => setCreateModal(false);
-  const createShow = () => setCreateModal(true);
-
-  const editClose = () => setEditModal(false);
-  const editShow = () => setEditModal(true);
-
-  const deleteClose = () => setDeleteModal(false);
-  const deleteShow = () => setDeleteModal(true);
+  if ( userLoading || userByIdLoading || updateUserLoading ||deleteUserLoading) return <p>Loading...</p>
+  if (errorMessage || userByIdError || updateUserError ||deleteUserError) return <p>Error!</p>
 
   return (
     < >
@@ -95,7 +59,7 @@ export default function TransferPage() {
         <div className="bg-secondary rounded p-4">
           <div className="d-flex align-items-center justify-content-between mb-4">
             <h5 className="mb-0 w-m-max me-2">ชื่อผู้ใช้</h5>
-            <Button variant="success" onClick={createShow}>
+            <Button variant="success" onClick={ShowModalCreate}>
               <FaPlus />
             </Button>
           </div>
@@ -106,27 +70,25 @@ export default function TransferPage() {
 
                 <thead>
                   <tr>
-                    <th >id</th>   
-                    <th >ชื่อ</th>
-                    <th >นามสกุล</th>
+                    <th >username</th>
+                    <th >ชื่อ-นามสกุล</th>
                     <th >เบอร์โทรศัพท์</th>
-                    <th >เลขบัญชี</th>
-                    <th >ธนาคาร</th>
                     <th >จัดการ</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {data.users.map((u) => (
-                     <tr>
-                    <th>{u.id}</th>
-                    <td>{u.name}</td>
-                    <td>{u.lastname}</td>
-                    <td>{u.tel}</td>
-                    <td>{u.accountnum}</td>
-                    <td>{u.bang}</td>
+                  {usersData?.map((user,index) => (
+                     <tr key={index}>
+                    <td>{user.username}</td>
+                    <td>{user.fname} {user.lname}</td>
+                    <td>{user.tel}</td>
                     <td>
-                      <Button className="btn btn-sm btn-success me-2" onClick={editShow}><FaEdit /></Button>
-                      <Button className="btn btn-sm btn-danger me-2" onClick={deleteShow}><FaTrash /></Button>
+                    <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(product.id)}><FaEdit /></a>
+                                            <a className="btn btn-sm btn-danger me-2" onClick={()=> executeProductDelete({
+                                                url: '/api/users/'+product.id,
+                                                method: 'DELETE'
+
+                                            })}><FaTrash /></a>
                     </td>
                   </tr>
                   ))}
@@ -137,90 +99,64 @@ export default function TransferPage() {
         </div>
       </Container>
 
-      <Modal show={createModal} onHide={createClose} centered className="bg-templant">
-        <Modal.Header closeButton >
-          <Modal.Title>เพิ่มสมาชิก</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>ชื่อผู้ใช้</Form.Label>
-            <Form.Control type="text" defaultValue='' />
-          </Form.Group>
-          <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>email</Form.Label>
-            <Form.Control type="text" defaultValue='' />
-          </Form.Group>
-          <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>เบอร์โทรศัพท์</Form.Label>
-            <Form.Control type="text" defaultValue='' />
-          </Form.Group>
-          <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>รหัสผ่าน</Form.Label>
-            <Form.Control type="password" />
-            <Form.Group controlId="formFile" className="mb-3">
-              <Form.Label>รูปผู้ใช้</Form.Label>
-              <Form.Control type="file" />
-            </Form.Group>
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={createClose}>
-            ยกเลิก
-          </Button>
-          <Button variant="success" onClick={createClose}>
-            สร้าง
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <Modal show={showModalCreate} onHide={CloseModal} centered className="bg-templant">
+                <Modal.Header closeButton >
+                    <Modal.Title>เพิ่มสมาชิก</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+              
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>username</Form.Label>
+                        <Form.Control type="text" value={username} onChange={event => setUserName(event.target.value)} />
+                    </Form.Group>
 
-      <Modal show={editModal} onHide={editClose} centered className="bg-templant">
-        <Modal.Header closeButton >
-          <Modal.Title>แก้ไขสมาชิก</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>ชื่อผู้ใช้</Form.Label>
-            <Form.Control type="text" defaultValue='นายมา แล้วไปไหนไม่รู้' />
-          </Form.Group>
-          <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>email</Form.Label>
-            <Form.Control type="text" defaultValue='gmail@hotmail.com' />
-          </Form.Group>
-          <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>เบอร์โทรศัพท์</Form.Label>
-            <Form.Control type="text" defaultValue='08888888888' />
-          </Form.Group>
-          <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>รูปผู้ใช้</Form.Label>
-            <Form.Control type="file" />
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={editClose}>
-            ยกเลิก
-          </Button>
-          <Button variant="success" onClick={editClose}>
-            ยืนยัน
-          </Button>
-        </Modal.Footer>
-      </Modal>
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>ชื่อ-นามสกุล</Form.Label>
+                        <Form.Control type="text" value={fname} onChange={event => setFname(event.target.value)} />
+                        <Form.Control type="text" value={lname} onChange={event => setLname(event.target.value)} />
+                    </Form.Group>
 
-      <Modal show={deleteModal} onHide={deleteClose} centered className="bg-templant">
-        <Modal.Header closeButton >
-          <Modal.Title>ต้องการลบผู้ใช้ .......</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Label>ยืนยันการลบผู้ใช้</Form.Label>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={deleteClose}>
-            ยกเลิก
-          </Button>
-          <Button variant="success" onClick={deleteClose}>
-            ยืนยัน
-          </Button>
-        </Modal.Footer>
-      </Modal>
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>เบอร์โทรศัพท์</Form.Label>
+                        <Form.Control type="text" value={tel} onChange={event => setTel(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>password</Form.Label>
+                        <Form.Control type="password" value={password} onChange={event => setPassword(event.target.value)} />
+                    </Form.Group>
+    
+                    
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={CloseModal}>
+                        ยกเลิก
+                    </Button>
+                    <Button variant="success" onClick={async event => {
+                        await executeUser({
+                            data: {
+                                username: username,
+                                fname: fname,
+                                lname: lname,
+                                tel: tel,
+                                password: password,
+                            }
+                        }).then(() => {
+                            Promise.all([
+                                setUserName(''),
+                                setFname('').
+                                setLname(''),
+                                setTel(''),
+                                setPassword('')
+                            ]).then(() => {
+                                CloseModal()
+                            })
+                        })
+                    }}>
+                        เพิ่ม
+                    </Button>
+                </Modal.Footer>
+            </Modal>
 
     </ >
   );

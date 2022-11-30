@@ -149,9 +149,6 @@ export default function TheSlideNav() {
                 <Link id="orderslist" href="/orders/orderslist">
                   <a className="dropdown-item">รายการสั่งซื้อหวย</a>
                 </Link>
-                <Link id="orderslist" href="/orders/delivery_list">
-                  <a className="dropdown-item">รายการจัดส่งสินค้า</a>
-                </Link>
               </Dropdown.Menu>
             </Dropdown>
 
