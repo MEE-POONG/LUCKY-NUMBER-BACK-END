@@ -9,14 +9,14 @@ datasource db {
 
 model User {
   id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  username   String
-  Fname      String
-  Lname      String
-  tel        String
-  password   String
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime
-  deleted_at DateTime     @map("deleted_at")
+  username   String?
+  fname      String?
+  lname      String?
+  tel        String?
+  password   String?
+  createdAt  DateTime?    @default(now())
+  updatedAt  DateTime?    @updatedAt
+  deleted_at DateTime?    @map("deleted_at")
   credits    Credit[]
   banks      Banks[]
   lotterys   Lottery[]
@@ -30,7 +30,7 @@ model Banks {
   namebank    String
   numberbank  String
   createdAt   DateTime @default(now())
-  updatedAt   DateTime
+  updatedAt   DateTime @updatedAt
   deleted_at  DateTime @map("deleted_at")
   user        User?    @relation(fields: [userId], references: [id])
 }
@@ -41,7 +41,7 @@ model Credit {
   addcredit  Int
   amount     Int
   createdAt  DateTime @default(now())
-  updatedAt  DateTime
+  updatedAt  DateTime @updatedAt
   deleted_at DateTime @map("deleted_at")
   user       User?    @relation(fields: [userId], references: [id])
 }
@@ -53,7 +53,7 @@ model About {
   detail     String
   image      String
   createdAt  DateTime @default(now())
-  updatedAt  DateTime
+  updatedAt  DateTime @updatedAt
   deleted_at DateTime @map("deleted_at")
 }
 
@@ -66,7 +66,7 @@ model Contact {
   facebook      String
   line          String
   createdAt     DateTime  @default(now())
-  updatedAt     DateTime
+  updatedAt     DateTime  @updatedAt
   deleted_at    DateTime? @map("deleted_at")
   image         String
   titleOpenDate String
@@ -76,7 +76,7 @@ model Lottotype {
   id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name       String
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime
+  updatedAt  DateTime @updatedAt
   deleted_at DateTime? @map("deleted_at")
   lotterys   Lottery[]
 }
@@ -88,7 +88,7 @@ model Lottery {
   price       Int?
   lottotypeId String       @db.Uuid
   createdAt   DateTime     @default(now())
-  updatedAt   DateTime
+  updatedAt   DateTime    @updatedAt
   deleted_at  DateTime?    @map("deleted_at")
   lottotype   Lottotype?   @relation(fields: [lottotypeId], references: [id])
   user        User?        @relation(fields: [userId], references: [id])
@@ -100,6 +100,9 @@ model Orderlotto {
   lotteryid String   @db.Uuid
   userId    String   @db.Uuid
   total     Int?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime    @updatedAt
+  deleted_at  DateTime?    @map("deleted_at")
   lottery   Lottery? @relation(fields: [lotteryid], references: [id])
   user      User?    @relation(fields: [userId], references: [id])
 }

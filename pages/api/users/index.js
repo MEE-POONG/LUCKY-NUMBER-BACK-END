@@ -2,32 +2,26 @@ import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient()
 
 export default async function handler(req, res) {
+
     const { method } = req
     switch (method) {
         case 'GET':
             try {
-                const data = await prisma.user.findMany(
-                    { include: { credits: true, unit: true } },
-                    {include: { banks: true, unit: true }},
-                    {include: { lotterys: true, unit: true }},
-                    {include: { orderlotto: true, unit: true }}
-                    );
+                const data = await prisma.user.findMany({});
                 res.status(200).json(data)
             } catch (error) {
                 res.status(400).json({ success: false })
             }
             break
-        case 'POST':
+            case 'POST':
             try {
-                await prisma.product.create({
+                await prisma.user.create({
                     data: {
-                        name: req.body.name,
-                        price: parseInt(req.body.price),
-                        description: req.body.description,
-                        image: req.body.image,
-                        categoryId: req.body.categoryId,
-                        amount: parseInt(req.body.amount),
-                        unitId: req.body.unitId,
+                        username: req.body.username,
+                        fname: req.body.fname,
+                        lname: req.body.lname,
+                        tel: req.body.tel,
+                        password: req.body.password,
                     }
                 })
                 res.status(201).json({ success: true })
