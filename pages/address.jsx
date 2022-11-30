@@ -46,11 +46,9 @@ export default function TransferPage() {
                     <th >id</th>
                     <th >user id</th>
                     <th >ชื่อผู้ใช้</th>
-                    <th>บ้านเลขที่</th>
-                    <th >จังหวัด</th>
-                    <th >อำเภอ</th>
-                    <th >ตำบล</th>
-                    <th >รหัสไปรษณีย์</th>
+                    <th >เลขบัญชี</th>
+                    <th >ธนาคาร</th>
+                    <th >จำนวนเครดิต</th>
                     <th >จัดการ</th>
                   </tr>
                 </thead>
@@ -59,8 +57,6 @@ export default function TransferPage() {
                     <th>1</th>
                     <td>1</td>
                     <td>นายมา แล้วไปไหนไม่รู้</td>
-                    <td>888 / 29</td>
-                    <td>นครราชสีมา</td>
                     <td>เมือง</td>
                     <td>ในเมือง</td>
                     <td>30000</td>
@@ -69,34 +65,7 @@ export default function TransferPage() {
                       <Button className="btn btn-sm btn-danger me-2" onClick={deleteShow}><FaTrash/></Button>
                     </td>
                   </tr>
-                  <tr>
-                    <th>1</th>
-                    <td>1</td>
-                    <td>นายมา แล้วไปไหนไม่รู้</td>
-                    <td>888 / 29</td>
-                    <td>นครราชสีมา</td>
-                    <td>เมือง</td>
-                    <td>ในเมือง</td>
-                    <td>30000</td>
-                    <td>
-                    <Button className="btn btn-sm btn-success me-2" onClick={editShow}><FaEdit/></Button>
-                      <Button className="btn btn-sm btn-danger me-2" onClick={deleteShow}><FaTrash/></Button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>1</th>
-                    <td>1</td>
-                    <td>นายมา แล้วไปไหนไม่รู้</td>
-                    <td>888 / 29</td>
-                    <td>นครราชสีมา</td>
-                    <td>เมือง</td>
-                    <td>ในเมือง</td>
-                    <td>30000</td>
-                    <td>
-                    <Button className="btn btn-sm btn-success me-2" onClick={editShow}><FaEdit/></Button>
-                      <Button className="btn btn-sm btn-danger me-2" onClick={deleteShow}><FaTrash/></Button>
-                    </td>
-                  </tr>
+                  
                 </tbody>
               </Table>
             </div>
