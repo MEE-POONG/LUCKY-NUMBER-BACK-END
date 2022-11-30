@@ -95,13 +95,11 @@ export default function OrdersListPage() {
                   <th scope="col"><input className="form-check-input" type="checkbox" /></th>
                   <th scope="col">หมายเลขคำสั่งซื้อ</th>
                   <th scope="col">ชื่อผู้สั่งซื้อ</th>
-                  <th scope="col">โทรศัพท์</th>
-                  <th scope="col">ที่อยู่</th>
+                  <th scope="col">จำนวนที่ซื้อ</th>
                   <th scope="col">ยอดรวม</th>
                   <th scope="col">สถานะการชำระเงิน</th>
-                  <th scope="col">พนักงานขาย</th>
-                  <th>วันที่สั่ง</th>
-                  <th scope="col">รายละเอียด</th>
+                  <th>วันที่ซื้อ</th>
+                  <th scope="col">จัดการ</th>
                 </tr>
               </thead>
               <tbody>
@@ -110,11 +108,9 @@ export default function OrdersListPage() {
                     <td><input className="form-check-input" type="checkbox" /></td>
                     <td>{o.order_number}</td>
                     <td>{o.Buyer_name}</td>
-                    <td>{o.tel}</td>
-                    <td>{o.address}</td>
+                    <td>{o.salesperson}</td>
                     <td>{o.total}</td>
                     <td> <a className='text-primary'>{o.status}</a></td>
-                    <td>{o.salesperson}</td>
                     <td>{o.date}</td>
                     <td>
                       <div className='manager'>
@@ -133,37 +129,7 @@ export default function OrdersListPage() {
                       </div>
                     </td>
                   </tr>
-
                 ))}
-
-
-                <tr>
-                  <td><input className="form-check-input" type="checkbox" /></td>
-                  <td>KC0001</td>
-                  <td>long long</td>
-                  <td>0990000000</td>
-                  <td>นครราชสีมา</td>
-                  <td>100</td>
-                  <td> <a className='text-danger'>ยังไม่ชำระเงิน</a></td>
-                  <td>พนักงาน1</td>
-                  <td>01 Jan 2045</td>
-                  <td>
-                    <div className='manager'>
-                      <OverlayTrigger
-                        placement="bottom" delay={{ show: 250, hide: 400 }} overlay={<Tooltip id="button-tooltip" >ดูรายละเอียด</Tooltip>} >
-                        <Button className="btn btn-sm btn-info mx-1" onClick={ShowModalEdit}>
-                          <FaClipboardList />
-                        </Button>
-                      </OverlayTrigger>
-                      <OverlayTrigger
-                        placement="bottom" delay={{ show: 250, hide: 400 }} overlay={<Tooltip id="button-tooltip" >ลบใบสั่งซืื้อ</Tooltip>} >
-                        <Button className="btn btn-sm btn-danger mx-1" onClick={ShowModalEdit}>
-                          <FaTimes />
-                        </Button>
-                      </OverlayTrigger>
-                    </div>
-                  </td>
-                </tr>
               </tbody>
             </table>
           </div>
