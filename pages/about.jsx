@@ -45,6 +45,12 @@ export default function AboutPage() {
                                 <label for="Inputname" className="form-label">รูปภาพของร้าน</label><br />
                                 {imageURL.map(imageSrcProduct => <Image className="mb-2" style={{ height: 200 }} src={imageSrcProduct} alt="product_img" fluid rounded />)}
                                 <input type="file" accept="image/*" onChange={onImageProductChange} className="form-control" id="#" placeholder='' />
+                                <br />
+                                    <div className="mb-3">
+                                        <label for="Inputphone" className="form-label">ชื่อของร้าน</label>
+                                        <input type="tel" className="form-control" style={{ width: "500px" }} id="# " placeholder='Lucky Number' />
+                                    </div>
+
                                 <div className="mb-3">
                                     <label for="Inputphone" className="form-label">รายละเอียดร้าน</label>
                                     <Editor/>
@@ -55,7 +61,7 @@ export default function AboutPage() {
                         </form>
                     </div>
 
-                    <div className="bg-secondary rounded p-4">
+                    {/* <div className="bg-secondary rounded p-4">
                         <h6 className="mb-4"> ข้อมูลเจ้าของร้าน </h6>
                         <form>
                             <div className="mb-3">
@@ -69,7 +75,7 @@ export default function AboutPage() {
 
                             <button type="submit" className="btn btn-success"  >ยืนยัน</button>
                         </form>
-                    </div>
+                    </div> */}
                 </Row>
 
 

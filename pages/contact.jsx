@@ -25,24 +25,24 @@ export default function ContactPage() {
                             <form>
                                 <div className="mb-3">
                                     <label for="Inputname" className="form-label">ชื่อของร้าน</label>
-                                    <input type="text" className="form-control" style={{ width: "500px" }} id="#" placeholder='Pig jungle' />
+                                    <input type="text" className="form-control" style={{ width: "500px" }} id="#" placeholder='Lucky Number' />
                                     <div className="mb-3">
                                         <label for="Inputphone" className="form-label">เบอร์โทรศัพท์</label>
                                         <input type="tel" className="form-control" style={{ width: "500px" }} id="# " placeholder='065-065-8538' />
                                     </div>
-                                    <div className="mb-3">
+                                    {/* <div className="mb-3">
                                         <label for="Inputname" className="form-label">ลิงค์เพจเฟสบุค</label>
                                         <input type="text" className="form-control" style={{ width: "500px" }} id="#" placeholder='Pig jungle' />
-                                    </div>
+                                    </div> */}
                                     <div className="mb-3">
                                         <label for="Inputphone" className="form-label">ลิงค์ไลน์</label>
-                                        <input type="text" className="form-control" style={{ width: "500px" }} id="# " placeholder='@Pig_jungle' />
+                                        <input type="text" className="form-control" style={{ width: "500px" }} id="# " placeholder='@LuckyNumber' />
                                     </div>
 
-                                    <div className="mb-3">
+                                    {/* <div className="mb-3">
                                         <label for="Inputname" className="form-label">e-mail</label>
                                         <input type="email" className="form-control" style={{ width: "500px" }} id="#" placeholder='Pig_jungle@egmail.com' />
-                                    </div>
+                                    </div> */}
 
                                     <div className="mb-3">
                                         <label for="Inputphone" className="form-label">ช่วงเวลาติดต่อ</label>
@@ -56,7 +56,7 @@ export default function ContactPage() {
                     </div>
 
 
-                    <div className="col-sm-12 col-xl-6">
+                    {/* <div className="col-sm-12 col-xl-6">
                         <div className="bg-secondary rounded h-100 p-4">
                             <h6 className="mb-4"> แผนที่ตั้ง </h6>
                             <iframe className="position-relative rounded w-100 h-300"
@@ -80,7 +80,7 @@ export default function ContactPage() {
                             <button type="submit" className="btn btn-success" style={{ width: "100px" }} placeholder='' >ยืนยัน</button>
 
                         </div>
-                    </div>  
+                    </div>   */}
                 </Row>
             </Container>
         </ >

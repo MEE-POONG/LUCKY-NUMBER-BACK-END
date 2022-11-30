@@ -106,12 +106,12 @@ export default function TransferPage() {
 
                 <thead>
                   <tr>
-                    <th >id</th>
-                    <th >รูปผู้ใช้</th>
-                    <th >ชื่อผู้ใช้</th>
-                    <th >email</th>
+                    <th >id</th>   
+                    <th >ชื่อ</th>
+                    <th >นามสกุล</th>
                     <th >เบอร์โทรศัพท์</th>
-                    <th >วันที่สมัคร</th>
+                    <th >เลขบัญชี</th>
+                    <th >ธนาคาร</th>
                     <th >จัดการ</th>
                   </tr>
                 </thead>
@@ -119,11 +119,11 @@ export default function TransferPage() {
                   {data.users.map((u) => (
                      <tr>
                     <th>{u.id}</th>
-                    <td><img className="img-fluid rounded-circle mx-auto mb-4" src={u.image} style={{ width: "40px", height: "40px" }} /></td>
                     <td>{u.name}</td>
-                    <td>{u.email}</td>
+                    <td>{u.lastname}</td>
                     <td>{u.tel}</td>
-                    <td>{u.date} </td>
+                    <td>{u.accountnum}</td>
+                    <td>{u.bang}</td>
                     <td>
                       <Button className="btn btn-sm btn-success me-2" onClick={editShow}><FaEdit /></Button>
                       <Button className="btn btn-sm btn-danger me-2" onClick={deleteShow}><FaTrash /></Button>
