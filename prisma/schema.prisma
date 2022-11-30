@@ -59,16 +59,14 @@ model About {
 
 model Contact {
   id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  titleName     String
+  title         String
   address       String
   tel           String
   openTime      String
-  facebook      String
   line          String
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   deleted_at    DateTime? @map("deleted_at")
-  image         String
   titleOpenDate String
 }
 
