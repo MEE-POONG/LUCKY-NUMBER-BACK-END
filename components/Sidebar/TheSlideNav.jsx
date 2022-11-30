@@ -149,9 +149,6 @@ export default function TheSlideNav() {
                 <Link id="orderslist" href="/orders/orderslist">
                   <a className="dropdown-item">รายการสั่งซื้อหวย</a>
                 </Link>
-                <Link id="orderslist" href="/orders/delivery_list">
-                  <a className="dropdown-item">รายการจัดส่งสินค้า</a>
-                </Link>
               </Dropdown.Menu>
             </Dropdown>
 
@@ -196,9 +193,6 @@ export default function TheSlideNav() {
                 จัดการเว็บไซต์
               </Dropdown.Toggle>
               <Dropdown.Menu className="bg-transparent border-0">
-                <Link id="knowledge" href="knowledge">
-                  <a className="dropdown-item">เกร็ดความรู้</a>
-                </Link>
                 <Link id="about" href="/about">
                   <a className="dropdown-item">เกี่ยวกับเรา</a>
                 </Link>
