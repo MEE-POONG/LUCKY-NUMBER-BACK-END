@@ -6,7 +6,9 @@ import { Container, Table, Button, Form, OverlayTrigger, Badge, Modal } from 're
 import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import useAxios from 'axios-hooks'
 
+
 export default function TransferPage() {
+
   const [{ data: creditData }, getCredit] = useAxios({ url: '/api/credit' })
   const [{ data: userData }, getUsers] = useAxios({ url: '/api/users' })
 
@@ -39,8 +41,6 @@ export default function TransferPage() {
    }
   const CloseModal = () => { setShowModalCreate(false), setShowModalEdit(false) };
 
-  if ( creditLoading || creditByIdLoading || updateCreditLoading ||deleteCreditLoading) return <p>Loading...</p>
-  if (errorMessage || creditByIdError || updateCreditError ||deleteCreditError) return <p>Error!</p>
 
   return (
     < >
@@ -80,8 +80,8 @@ export default function TransferPage() {
                     <td>{credit.addcredit}</td>
                     <td>{credit.amount}</td>
                     <td>
-                    <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(credit.id)}><FaEdit /></a>
-                                            <a className="btn btn-sm btn-danger me-2" onClick={()=> executeCreditDelete({
+                    <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(credit.id)}><FaEdit/></a>
+                                        <a className="btn btn-sm btn-danger me-2" onClick={()=> executeCreditDelete({
                                                 url: '/api/credit/'+credit.id,
                                                 method: 'DELETE'
 
@@ -95,6 +95,14 @@ export default function TransferPage() {
           </div>
         </div>
       </Container>
+
+      <Modal show={creditLoading || creditByIdLoading || updateCreditLoading ||deleteCreditLoading}>
+        <Modal.Body className='text-center'>Lodeing........</Modal.Body>
+      </Modal>
+
+      <Modal  show={errorMessage || creditByIdError || updateCreditError ||deleteCreditError} >
+        <Modal.Body className='text-center'>Error........</Modal.Body>
+      </Modal>
 
       <Modal show={showModalCreate} onHide={CloseModal} centered className="bg-templant">
                 <Modal.Header closeButton >
@@ -134,15 +142,14 @@ export default function TransferPage() {
                                 amount:amount,
                             }
                         }).then(() => {
+                            CloseModal()
                             Promise.all([
                               setUserName(''),
                               setAddCredit(''),
                               setAmount(''),
                               getCredit(),
                               getUsers(),
-                            ]).then(() => {
-                                CloseModal()
-                            })
+                            ])
                         })
                     }}>
                         เพิ่ม
