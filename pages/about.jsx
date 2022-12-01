@@ -4,12 +4,28 @@ import IndexPage from "components/layouts/IndexPage";
 import { useRouter } from 'next/router';
 import { Container, Image, Table, Button, Form, OverlayTrigger, Badge, Modal, Row } from 'react-bootstrap';
 import Editor from '@/components/Ckeditor/Editor';
+import useAxios from 'axios-hooks';
 
 export default function AboutPage() {
+
+    const [{data: aboutData}] = useAxios({url: '/api/about'})
+    const [{ data: aboutById , loading: aboutByIdLoading , error: aboutByIdError},getAboutById] = useAxios({},{ manual: true } )
+    const [{ loading: updateAboutLoading, error: updateAboutError }, executeAboutPut] = useAxios({},{manual: true})
+
+
 
     // ----ing-----
     const [image, setImage] = useState([])
     const [imageURL, setImageURL] = useState([])
+
+    const [title, SetTitle] = useState('');
+    const [subtitle, SetSubtitle] = useState('');
+    const [detail, SetDetail] = useState('');
+    const [img, setImg] = useState('');
+
+   useEffect(() =>{
+    SetTitle(aboutById?.title)
+   })
 
     useEffect(() => {
 
@@ -23,7 +39,8 @@ export default function AboutPage() {
         setImage([...e.target.files])
     }
 
-    const router = useRouter();
+    if (aboutByIdLoading || updateAboutLoading) return <p>Loading...</p>
+    if (aboutByIdError || updateAboutError) return <p>Error!</p>
     return (
         < >
             <Head>
@@ -47,7 +64,12 @@ export default function AboutPage() {
                                 <input type="file" accept="image/*" onChange={onImageProductChange} className="form-control" id="#" placeholder='' />
                                 <br />
                                     <div className="mb-3">
-                                        <label for="Inputphone" className="form-label">ชื่อของร้าน</label>
+                                        <label for="Inputphone" className="form-label">หัวข้อหลัก</label>
+                                        <input type="tel" className="form-control" style={{ width: "500px" }} id="# " placeholder='Lucky Number' />
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <label for="Inputphone" className="form-label">หัวข้อหลัก</label>
                                         <input type="tel" className="form-control" style={{ width: "500px" }} id="# " placeholder='Lucky Number' />
                                     </div>
 
@@ -60,22 +82,6 @@ export default function AboutPage() {
                             <button type="submit" className="btn btn-success"  >ยืนยัน</button>
                         </form>
                     </div>
-
-                    {/* <div className="bg-secondary rounded p-4">
-                        <h6 className="mb-4"> ข้อมูลเจ้าของร้าน </h6>
-                        <form>
-                            <div className="mb-3">
-                                <label for="Inputname" className="form-label">รูปภาพเจ้าของร้าน</label>
-                                <input type="file" className="form-control" id="#" placeholder='' />
-                            </div>
-                            <div className="mb-3">
-                                <label for="Inputphone" className="form-label">รายละเอียดเจ้าของร้าน</label>
-                                <Editor/>
-                            </div>
-
-                            <button type="submit" className="btn btn-success"  >ยืนยัน</button>
-                        </form>
-                    </div> */}
                 </Row>
 
 
