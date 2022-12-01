@@ -6,7 +6,9 @@ import { Container, Table, Button, Form, OverlayTrigger, Badge, Modal } from 're
 import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import useAxios from 'axios-hooks'
 
+
 export default function TransferPage() {
+
   const [{ data: creditData }, getCredit] = useAxios({ url: '/api/credit' })
   const [{ data: userData }, getUsers] = useAxios({ url: '/api/users' })
 
@@ -27,8 +29,6 @@ export default function TransferPage() {
     setUserName(creditById?.userId)
     setAddCredit(creditById?.addcredit)
     setAmount(creditById?.amount)
-    
-
   },[creditById])
 
   const [showModalCreate, setShowModalCreate] = useState(false);
@@ -36,13 +36,11 @@ export default function TransferPage() {
 
   const ShowModalCreate = () => setShowModalCreate(true);
   const ShowModalEdit = async (id) => { 
-   await getCreditById({url: '/api/credit'+id,method:'GET'});
+   await getCreditById({url: '/api/credit/'+id,method:'GET'});
     setShowModalEdit(true);
    }
   const CloseModal = () => { setShowModalCreate(false), setShowModalEdit(false) };
 
-  if ( creditLoading || creditByIdLoading || updateCreditLoading ||deleteCreditLoading) return <p>Loading...</p>
-  if (errorMessage || creditByIdError || updateCreditError ||deleteCreditError) return <p>Error!</p>
 
   return (
     < >
@@ -82,8 +80,8 @@ export default function TransferPage() {
                     <td>{credit.addcredit}</td>
                     <td>{credit.amount}</td>
                     <td>
-                    <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(credit.id)}><FaEdit /></a>
-                                            <a className="btn btn-sm btn-danger me-2" onClick={()=> executeCreditDelete({
+                    <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(credit.id)}><FaEdit/></a>
+                                        <a className="btn btn-sm btn-danger me-2" onClick={()=> executeCreditDelete({
                                                 url: '/api/credit/'+credit.id,
                                                 method: 'DELETE'
 
@@ -97,6 +95,14 @@ export default function TransferPage() {
           </div>
         </div>
       </Container>
+
+      <Modal show={creditLoading || creditByIdLoading || updateCreditLoading ||deleteCreditLoading}>
+        <Modal.Body className='text-center'>Lodeing........</Modal.Body>
+      </Modal>
+
+      <Modal  show={errorMessage || creditByIdError || updateCreditError ||deleteCreditError} >
+        <Modal.Body className='text-center'>Error........</Modal.Body>
+      </Modal>
 
       <Modal show={showModalCreate} onHide={CloseModal} centered className="bg-templant">
                 <Modal.Header closeButton >
@@ -136,15 +142,14 @@ export default function TransferPage() {
                                 amount:amount,
                             }
                         }).then(() => {
+                            CloseModal()
                             Promise.all([
                               setUserName(''),
                               setAddCredit(''),
                               setAmount(''),
                               getCredit(),
                               getUsers(),
-                            ]).then(() => {
-                                CloseModal()
-                            })
+                            ])
                         })
                     }}>
                         เพิ่ม
@@ -159,18 +164,22 @@ export default function TransferPage() {
                 <Modal.Body>
               
                 <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>username</Form.Label>
-                        <Form.Control type="text" value={username} onChange={event => setUserName(event.target.value)} readOnly />
+                    <Form.Select value={username} onChange={event => setUserName(event.target.value)}  >
+                            <option value="">username</option>
+                            {userData?.map((user, index) => (
+                                <option key={index} value={user.id}>{user.username}</option>
+                            ))}
+                        </Form.Select>
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>credit เข้า</Form.Label>
-                        <Form.Control type="text" value={addcredit} onChange={event => setAddCredit(event.target.value)} />
+                        <Form.Control type="number" value={addcredit} onChange={event => setAddCredit(event.target.value)} />
                     </Form.Group>
                     
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>credit ทั้งหมด</Form.Label>
-                        <Form.Control type="text" value={amount} onChange={event => setAmount(event.target.value)} />
+                        <Form.Control type="number" value={amount} onChange={event => setAmount(event.target.value)} />
                     </Form.Group>
     
                 </Modal.Body>
@@ -183,7 +192,7 @@ export default function TransferPage() {
                             url: '/api/credit/' + creditById?.id,
                             method: 'PUT',
                             data: {
-                                username:username,
+                                userId:username,
                                 addcredit:addcredit,
                                 amount:amount,
                             }
@@ -192,7 +201,8 @@ export default function TransferPage() {
                                 setUserName(''),
                                 setAddCredit(''),
                                 setAmount(''),
-                                getUser()
+                                getCredit(),
+                                getUsers(),
                             ]).then(() => {
                                 CloseModal()
                             })

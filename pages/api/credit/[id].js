@@ -24,9 +24,9 @@ export default async function handler(req, res) {
                         id: req.query.id
                     },
                     data: {
-                        addcreate: parseInt(req.body.addcreate),
+                        addcredit: parseInt(req.body.addcredit),
                         amount: parseInt(req.body.amount),
-                        userId: req.body.userId    
+                        userId: req.body.userId,       
                     }
                 })
                 prisma.$disconnect();
