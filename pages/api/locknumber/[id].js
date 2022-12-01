@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
-                const data = await prisma.lottotype.findFirst({
+                const data = await prisma.locknumber.findFirst({
                     where: {
                         id: req.query.id
                     }
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
             break
         case 'PUT':
             try {
-                await prisma.lottotype.update({
+                await prisma.locknumber.update({
                     where: {
                         id: req.query.id
                     },
@@ -36,7 +36,7 @@ export default async function handler(req, res) {
             break
         case 'DELETE':
             try {
-                await prisma.lottotype.delete({
+                await prisma.locknumber.delete({
                     where: {
                         id: req.query.id
                     }

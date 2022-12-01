@@ -77,10 +77,10 @@ export default function TheSlideNav() {
                 จัดการหวย
               </Dropdown.Toggle>
               <Dropdown.Menu className="bg-transparent border-0">
-                <Link id="buttons" href="/products">
+                <Link id="buttons" href="/locknumber">
                   <a className="dropdown-item">อัพเดทเลขอั้น</a>
                 </Link>
-                <Link id="typographys" href="/promotions">
+                <Link id="typographys" href="/lottotype">
                   <a className="dropdown-item">ประเภทหวย</a>
                 </Link>
               </Dropdown.Menu>
@@ -97,10 +97,10 @@ export default function TheSlideNav() {
                 <Link id="buttons" href="/user">
                   <a className="dropdown-item">เพิ่ม/ลบ/แก้ไข สมาชิก</a>
                 </Link>
-                <Link id="typographys" href="/address">
+                <Link id="typographys" href="/banks">
                   <a className="dropdown-item">ธนาคาร</a>
                 </Link>
-                <Link id="typographys" href="/address">
+                <Link id="typographys" href="/credit">
                   <a className="dropdown-item">เครดิตลูกค้า</a>
                 </Link>
               </Dropdown.Menu>
