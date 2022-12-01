@@ -43,8 +43,8 @@ export default function BanksPage() {
    }
   const CloseModal = () => { setShowModalCreate(false), setShowModalEdit(false) };
 
-  if ( banksLoading || banksByIdLoading || updateBanksLoading ||deleteBanksLoading) return <p>Loading...</p>
-  if (errorMessage || banksByIdError || updateBanksError ||deleteBanksError) return <p>Error!</p>
+  // if ( banksLoading || banksByIdLoading || updateBanksLoading ||deleteBanksLoading) return <p>Loading...</p>
+  // if (errorMessage || banksByIdError || updateBanksError ||deleteBanksError) return <p>Error!</p>
 
   return (
     < >
@@ -59,7 +59,7 @@ export default function BanksPage() {
       <Container fluid className=" pt-4 px-4">
         <div className="bg-secondary rounded p-4">
           <div className="d-flex align-items-center justify-content-between mb-4">
-            <h5 className="mb-0 w-m-max me-2">ชื่อผู้ใช้</h5>
+            <h5 className="mb-0 w-m-max me-2">ธนาคาร</h5>
             <Button variant="success" onClick={ShowModalCreate}>
               <FaPlus />
             </Button>
@@ -101,6 +101,14 @@ export default function BanksPage() {
           </div>
         </div>
       </Container>
+
+      <Modal show={banksLoading || banksByIdLoading || updateBanksLoading ||deleteBanksLoading}>
+        <Modal.Body className='text-center'>Loading........</Modal.Body>
+      </Modal>
+
+      <Modal  show={errorMessage || banksByIdError || updateBanksError ||deleteBanksError} >
+        <Modal.Body className='text-center'>Error........</Modal.Body>
+      </Modal>
 
       <Modal show={showModalCreate} onHide={CloseModal} centered className="bg-templant">
                 <Modal.Header closeButton >

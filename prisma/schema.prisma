@@ -23,7 +23,7 @@ model User {
 }
 
 model Banks {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId      String?   @db.Uuid
   accountname String?
   namebank    String?
@@ -35,7 +35,7 @@ model Banks {
 }
 
 model Credit {
-  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId     String?   @db.Uuid
   addcredit  Int?
   amount     Int?
@@ -82,9 +82,9 @@ model Lottery {
   id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   numberlotto String?
   price       Int?
-  lottotypeId String?       @db.Uuid
-  createdAt   DateTime?     @default(now())
-  updatedAt   DateTime?     @updatedAt
+  lottotypeId String?      @db.Uuid
+  createdAt   DateTime?    @default(now())
+  updatedAt   DateTime?    @updatedAt
   deleted_at  DateTime?    @map("deleted_at")
   lottotype   Lottotype?    @relation(fields: [lottotypeId], references: [id])
   orderlotto  Orderlotto[]
@@ -92,14 +92,14 @@ model Lottery {
 
 model Orderlotto {
   id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  lotteryid  String?    @db.Uuid
-  userId     String?    @db.Uuid
+  lotteryid  String?   @db.Uuid
+  userId     String?   @db.Uuid
   total      Int?
-  createdAt  DateTime?  @default(now())
+  createdAt  DateTime? @default(now())
   deleted_at DateTime? @map("deleted_at")
-  updatedAt  DateTime?  @updatedAt
-  lottery    Lottery?   @relation(fields: [lotteryid], references: [id])
-  user       User?      @relation(fields: [userId], references: [id])
+  updatedAt  DateTime? @updatedAt
+  lottery    Lottery?  @relation(fields: [lotteryid], references: [id])
+  user       User?     @relation(fields: [userId], references: [id])
 }
 
 model Locknumber {
