@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
-                const data = await prisma.user.findFirst({
+                const data = await prisma.credit.findFirst({
                     where: {
                         id: req.query.id
                     }
@@ -19,16 +19,14 @@ export default async function handler(req, res) {
             break
         case 'PUT':
             try {
-                await prisma.user.update({
+                await prisma.credit.update({
                     where: {
                         id: req.query.id
                     },
                     data: {
-                        username: req.body.username,
-                        fname: req.body.fname,
-                        lname: req.body.lname,
-                        tel: req.body.tel,
-                        password: req.body.password,
+                        addcreate: parseInt(req.body.addcreate),
+                        amount: parseInt(req.body.amount),
+                        userId: req.body.userId    
                     }
                 })
                 prisma.$disconnect();
@@ -39,7 +37,7 @@ export default async function handler(req, res) {
             break
         case 'DELETE':
             try {
-                await prisma.user.delete({
+                await prisma.credit.delete({
                     where: {
                         id: req.query.id
                     }

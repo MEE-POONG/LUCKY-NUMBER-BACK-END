@@ -1,28 +1,32 @@
+
 import { PrismaClient } from "@prisma/client"
-import { TRUE } from "sass"
 const prisma = new PrismaClient()
 
 export default async function handler(req, res) {
-
     const { method } = req
     switch (method) {
         case 'GET':
             try {
-                const data = await prisma.credit.findMany({ include: { user: true } });
+                const data = await prisma.about.findMany();
                 res.status(200).json(data)
             } catch (error) {
                 res.status(400).json({ success: false })
             }
             break
-            case 'POST':
+        case 'PUT':
             try {
-                await prisma.credit.create({
+                await prisma.about.update({
+                    where: {
+                        id: req.query.id
+                    },
                     data: {
-                        addcreate: parseInt(req.body.addcreate),
-                        amount: parseInt(req.body.amount),
-                        userId: req.body.userId               
-                    }   
+                        title: req.body.title,
+                        subtitle: req.body.subtitle,
+                        detail: req.body.detail,
+                        image: req.body.image,
+                    }
                 })
+                // prisma.$disconnect();
                 res.status(201).json({ success: true })
             } catch (error) {
                 res.status(400).json({ success: false })
