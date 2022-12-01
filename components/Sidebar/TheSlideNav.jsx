@@ -17,8 +17,12 @@ import { Image, Dropdown, Button } from "react-bootstrap";
 import { BsFillBagFill } from "react-icons/bs";
 
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function TheSlideNav() {
+
+  const { asPath } = useRouter();
+
   return (
     <>
       <div className="sidebar pe-4 pb-3 ">
@@ -47,7 +51,12 @@ export default function TheSlideNav() {
             </div>
           </div>
           <div className="navbar-nav w-100">
-            <Link href="/">
+            <Link href="/"
+                  className={
+                    asPath === "/"
+                      ? "active font-menu font-bold mx-auto"
+                      : " font-menu font-bold mx-auto"
+                  }>
               <a className="nav-item nav-link active">
                 <i className="me-2">
                   <FaTachometerAlt />
@@ -77,6 +86,9 @@ export default function TheSlideNav() {
                 จัดการหวย
               </Dropdown.Toggle>
               <Dropdown.Menu className="bg-transparent border-0">
+              <Link id="buttons" href="/lottery">
+                  <a className="dropdown-item">อัพเดทเลขที่ขาย</a>
+                </Link>
                 <Link id="buttons" href="/locknumber">
                   <a className="dropdown-item">อัพเดทเลขอั้น</a>
                 </Link>

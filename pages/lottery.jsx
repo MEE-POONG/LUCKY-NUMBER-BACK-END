@@ -45,7 +45,7 @@ export default function TransferPage() {
   return (
     < >
       <Head>
-        <title>Pig Jungle</title>
+        <title>Lucky Number/title>
         <meta
           name="description"
           content="I2AROBOT 2"
