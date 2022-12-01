@@ -45,7 +45,7 @@ export default function CreditPage() {
   return (
     < >
       <Head>
-        <title>Lucky Number/title>
+        <title> Lucky Number </title>
         <meta
           name="description"
           content="I2AROBOT 2"
