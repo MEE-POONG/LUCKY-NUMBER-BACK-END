@@ -11,7 +11,7 @@ export default function ResultNumber() {
                         <div className="bg-secondary rounded shadow d-flex align-items-center justify-content-between p-4">
                             <FaChartLine className="text-primary display-5" />
                             <div className="ms-3">
-                                <p className="mb-2">Today Sale</p>
+                                <p className="mb-2">ยอดขายวันนี้</p>
                                 <h6 className="mb-0">$1234</h6>
                             </div>
                         </div>
@@ -20,7 +20,7 @@ export default function ResultNumber() {
                         <div className="bg-secondary rounded shadow d-flex align-items-center justify-content-between p-4">
                             <FaChartBar className="text-primary display-5" />
                             <div className="ms-3">
-                                <p className="mb-2">Total Sale</p>
+                                <p className="mb-2">ยอดขายรวม</p>
                                 <h6 className="mb-0">$1234</h6>
                             </div>
                         </div>
@@ -29,7 +29,7 @@ export default function ResultNumber() {
                         <div className="bg-secondary rounded shadow d-flex align-items-center justify-content-between p-4">
                             <FaChartArea className="text-primary display-5" />
                             <div className="ms-3">
-                                <p className="mb-2">Today Revenue</p>
+                                <p className="mb-2">รายได้วันนี้</p>
                                 <h6 className="mb-0">$1234</h6>
                             </div>
                         </div>
@@ -38,7 +38,7 @@ export default function ResultNumber() {
                         <div className="bg-secondary rounded shadow d-flex align-items-center justify-content-between p-4">
                             <FaChartPie className="text-primary display-5" />
                             <div className="ms-3">
-                                <p className="mb-2">Total Revenue</p>
+                                <p className="mb-2">รายได้รวม</p>
                                 <h6 className="mb-0">$1234</h6>
                             </div>
                         </div>
