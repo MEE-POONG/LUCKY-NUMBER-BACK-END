@@ -83,9 +83,9 @@ export default function TransferPage() {
                     <td>{user.fname} {user.lname}</td>
                     <td>{user.tel}</td>
                     <td>
-                    <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(user.id)}><FaEdit /></a>
-                                            <a className="btn btn-sm btn-danger me-2" onClick={()=> executeUserDelete({
-                                                url: '/api/users/'+user.id,
+                    <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(product.id)}><FaEdit /></a>
+                                            <a className="btn btn-sm btn-danger me-2" onClick={()=> executeProductDelete({
+                                                url: '/api/users/'+product.id,
                                                 method: 'DELETE'
 
                                             })}><FaTrash /></a>
@@ -136,19 +136,19 @@ export default function TransferPage() {
                     <Button variant="success" onClick={async event => {
                         await executeUser({
                             data: {
-                                username:username,
-                                fname:fname,
-                                lname:lname,
-                                tel:tel,
-                                password:password,
+                                username: username,
+                                fname: fname,
+                                lname: lname,
+                                tel: tel,
+                                password: password,
                             }
                         }).then(() => {
                             Promise.all([
-                              setUserName(''),
-                              setFname(''),
-                              setLname(''),
-                              setTel(''),
-                              setPassword(''),
+                                setUserName(''),
+                                setFname('').
+                                setLname(''),
+                                setTel(''),
+                                setPassword('')
                             ]).then(() => {
                                 CloseModal()
                             })
@@ -158,69 +158,6 @@ export default function TransferPage() {
                     </Button>
                 </Modal.Footer>
             </Modal>
-
-            <Modal show={showModalEdit} onHide={CloseModal} centered className="bg-templant">
-            <Modal.Header closeButton >
-                    <Modal.Title>เพิ่มสมาชิก</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-              
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>username</Form.Label>
-                        <Form.Control type="text" value={username} onChange={event => setUserName(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อ-นามสกุล</Form.Label>
-                        <Form.Control type="text" value={fname} onChange={event => setFname(event.target.value)} />
-                        <Form.Control type="text" value={lname} onChange={event => setLname(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>เบอร์โทรศัพท์</Form.Label>
-                        <Form.Control type="text" value={tel} onChange={event => setTel(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>password</Form.Label>
-                        <Form.Control type="password" value={password} onChange={event => setPassword(event.target.value)} />
-                    </Form.Group>
-    
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={CloseModal}>
-                        ยกเลิก
-                    </Button>
-                    <Button variant="success" onClick={() => {
-                        executeUserPut({
-                            url: '/api/users/' + userById?.id,
-                            method: 'PUT',
-                            data: {
-                              username: username,
-                              fname: fname,
-                              lname: lname,
-                              tel: tel,
-                              password: password,
-                            }
-                          }).then(() => {
-                            Promise.all([
-                              setUserName(''),
-                              setFname(''),
-                              setLname(''),
-                              setTel(''),
-                              setPassword(''),
-                            ]).then(() => {
-                                CloseModal()
-                            })
-                        })
-
-                    }}>
-                        บันทึก
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-
-            
 
     </ >
   );
