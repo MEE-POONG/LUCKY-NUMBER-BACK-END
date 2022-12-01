@@ -6,50 +6,46 @@ import { Container, Table, Button, Form, OverlayTrigger, Badge, Modal } from 're
 import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import useAxios from 'axios-hooks'
 
-export default function BanksPage() {
-  const [{ data: banksData }, getBanks] = useAxios({ url: '/api/banks' })
+
+export default function TransferPage() {
+
+  const [{ data: lotteryData }, getLottery] = useAxios({ url: '/api/lottery' }) 
   const [{ data: userData }, getUsers] = useAxios({ url: '/api/users' })
 
-  const [{ data: postData, error: errorMessage, loading: banksLoading }, executeBanks] = useAxios({ url: '/api/banks', method: 'POST' }, { manual: true });
+  const [{ data: postData, error: errorMessage, loading: creditLoading }, executeCredit] = useAxios({ url: '/api/credit', method: 'POST' }, { manual: true });
 
-  const [{ data: banksById , loading: banksByIdLoading , error: banksByIdError},getBanksById] = useAxios({},{ manual: true } )
+  const [{ data: creditById , loading: creditByIdLoading , error: creditByIdError},getCreditById] = useAxios({},{ manual: true } )
   
-  const [{ loading: updateBanksLoading, error: updateBanksError }, executeBanksPut] = useAxios({},{manual: true})
+  const [{ loading: updateCreditLoading, error: updateCreditError }, executeCreditPut] = useAxios({},{manual: true})
 
-  const [{loading: deleteBanksLoading , error: deleteBanksError},executeBanksDelete]= useAxios({},{manual: true})
+  const [{loading: deleteCreditLoading , error: deleteCreditError},executeCreditDelete]= useAxios({},{manual: true})
 
   const [username, setUserName] = useState('');
-  const [accountname, setAccountname] = useState('');
-  const [namebank, setNamebank] = useState('');
-  const [numberbank, setNumberbank] = useState('');
+  const [addcredit, setAddCredit] = useState('');
+  const [amount, setAmount] = useState('');
 
   
   useEffect(()=>{
-    setUserName(banksById?.userId)
-    setAccountname(banksById?.accountname)
-    setNamebank(banksById?.namebank)
-    setNumberbank(banksById?.numberbank)
-    
-
-  },[banksById])
+    setUserName(creditById?.userId)
+    setAddCredit(creditById?.addcredit)
+    setAmount(creditById?.amount)
+  },[creditById])
 
   const [showModalCreate, setShowModalCreate] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
 
   const ShowModalCreate = () => setShowModalCreate(true);
   const ShowModalEdit = async (id) => { 
-   await getBanksById({url: '/api/banks'+id,method:'GET'});
+   await getCreditById({url: '/api/credit/'+id,method:'GET'});
     setShowModalEdit(true);
    }
   const CloseModal = () => { setShowModalCreate(false), setShowModalEdit(false) };
 
-  if ( banksLoading || banksByIdLoading || updateBanksLoading ||deleteBanksLoading) return <p>Loading...</p>
-  if (errorMessage || banksByIdError || updateBanksError ||deleteBanksError) return <p>Error!</p>
 
   return (
     < >
       <Head>
-        <title>Lucky Number</title>
+        <title>Pig Jungle</title>
         <meta
           name="description"
           content="I2AROBOT 2"
@@ -71,24 +67,22 @@ export default function BanksPage() {
 
                 <thead>
                   <tr>
-                    <th >ชื่อเจ้าของบัญชี</th>
-                    <th >ธนาคาร</th>
-                    <th >ชื่อบัญชีธนาคาร</th>
-                    <th >เลขบัญชีธนาคาร</th>
+                    <th >username</th>
+                    <th >credit เข้า</th>
+                    <th >credit ทั้งหมด</th>
                     <th >จัดการ</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {banksData?.map((banks,index) => (
+                  {creditData?.map((credit,index) => (
                      <tr key={index}>
-                    <td>{banks?.user?.username}</td>
-                    <td>{banks.accountname}</td>
-                    <td>{banks.namebank}</td>
-                    <td>{banks.numberbank}</td>
+                    <td>{credit?.user?.username}</td>
+                    <td>{credit.addcredit}</td>
+                    <td>{credit.amount}</td>
                     <td>
-                    <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(banks.id)}><FaEdit /></a>
-                                            <a className="btn btn-sm btn-danger me-2" onClick={()=> executeBanksDelete({
-                                                url: '/api/banks/'+banks.id,
+                    <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(credit.id)}><FaEdit/></a>
+                                        <a className="btn btn-sm btn-danger me-2" onClick={()=> executeCreditDelete({
+                                                url: '/api/credit/'+credit.id,
                                                 method: 'DELETE'
 
                                             })}><FaTrash /></a>
@@ -102,15 +96,23 @@ export default function BanksPage() {
         </div>
       </Container>
 
+      <Modal show={creditLoading || creditByIdLoading || updateCreditLoading ||deleteCreditLoading}>
+        <Modal.Body className='text-center'>Lodeing........</Modal.Body>
+      </Modal>
+
+      <Modal  show={errorMessage || creditByIdError || updateCreditError ||deleteCreditError} >
+        <Modal.Body className='text-center'>Error........</Modal.Body>
+      </Modal>
+
       <Modal show={showModalCreate} onHide={CloseModal} centered className="bg-templant">
                 <Modal.Header closeButton >
-                    <Modal.Title>เพิ่มบัญชี</Modal.Title>
+                    <Modal.Title>เพิ่มสมาชิก</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
 
                     <Form.Group controlId="formFile" className="mb-3">
                     <Form.Select value={username} onChange={event => setUserName(event.target.value)}>
-                            <option value="">ชื่อเจ้าของบัญชี</option>
+                            <option value="">username</option>
                             {userData?.map((user, index) => (
                                 <option key={index} value={user.id}>{user.username}</option>
                             ))}
@@ -118,18 +120,13 @@ export default function BanksPage() {
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ธนาคาร</Form.Label>
-                        <Form.Control type="number" value={accountname} onChange={event => setAccountname(event.target.value)} />
+                        <Form.Label>credit เข้า</Form.Label>
+                        <Form.Control type="number" value={addcredit} onChange={event => setAddCredit(event.target.value)} />
                     </Form.Group>
                     
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อบัญชีธนาคาร</Form.Label>
-                        <Form.Control type="number" value={namebank} onChange={event => setNamebank(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>เลขบัญชีธนาคาร</Form.Label>
-                        <Form.Control type="number" value={numberbank} onChange={event => setNumberbank(event.target.value)} />
+                        <Form.Label>credit ทั้งหมด</Form.Label>
+                        <Form.Control type="number" value={amount} onChange={event => setAmount(event.target.value)} />
                     </Form.Group>
                     
                 </Modal.Body>
@@ -138,25 +135,21 @@ export default function BanksPage() {
                         ยกเลิก
                     </Button>
                     <Button variant="success" onClick={async event => {
-                        await executeBanks({
+                        await executeCredit({
                             data: {                        
                                 userId:username,
-                                accountname:accountname,
-                                namebank: namebank,
-                                numberbank: numberbank,
- 
+                                addcredit:addcredit,
+                                amount:amount,
                             }
                         }).then(() => {
+                            CloseModal()
                             Promise.all([
                               setUserName(''),
-                              setAccountname(''),
-                              setNamebank(''),
-                              setNumberbank(''),
-                              getBanks(),
+                              setAddCredit(''),
+                              setAmount(''),
+                              getCredit(),
                               getUsers(),
-                            ]).then(() => {
-                                CloseModal()
-                            })
+                            ])
                         })
                     }}>
                         เพิ่ม
@@ -171,23 +164,22 @@ export default function BanksPage() {
                 <Modal.Body>
               
                 <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อเจ้าของบัญชี</Form.Label>
-                        <Form.Control type="text" value={username} onChange={event => setUserName(event.target.value)} readOnly />
+                    <Form.Select value={username} onChange={event => setUserName(event.target.value)}  >
+                            <option value="">username</option>
+                            {userData?.map((user, index) => (
+                                <option key={index} value={user.id}>{user.username}</option>
+                            ))}
+                        </Form.Select>
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ธนาคาร</Form.Label>
-                        <Form.Control type="text" value={accountname} onChange={event => setAccountname(event.target.value)} />
+                        <Form.Label>credit เข้า</Form.Label>
+                        <Form.Control type="number" value={addcredit} onChange={event => setAddCredit(event.target.value)} />
                     </Form.Group>
                     
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อบัญชีธนาคาร</Form.Label>
-                        <Form.Control type="text" value={namebank} onChange={event => setNamebank(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>เลขบัญชีธนาคาร</Form.Label>
-                        <Form.Control type="text" value={numberbank} onChange={event => setNumberbank(event.target.value)} />
+                        <Form.Label>credit ทั้งหมด</Form.Label>
+                        <Form.Control type="number" value={amount} onChange={event => setAmount(event.target.value)} />
                     </Form.Group>
     
                 </Modal.Body>
@@ -196,23 +188,21 @@ export default function BanksPage() {
                         ยกเลิก
                     </Button>
                     <Button variant="success" onClick={() => {
-                        executeBanksPut({
-                            url: '/api/banks/' + banksById?.id,
+                        executeCreditPut({
+                            url: '/api/credit/' + creditById?.id,
                             method: 'PUT',
                             data: {
-                              userId:username,
-                              accountname:accountname,
-                              namebank: namebank,
-                              numberbank: numberbank,
+                                userId:username,
+                                addcredit:addcredit,
+                                amount:amount,
                             }
                           }).then(() => {
                             Promise.all([
-                              setUserName(''),
-                              setAccountname(''),
-                              setNamebank(''),
-                              setNumberbank(''),
-                              getBanks(),
-                                getUser()
+                                setUserName(''),
+                                setAddCredit(''),
+                                setAmount(''),
+                                getCredit(),
+                                getUsers(),
                             ]).then(() => {
                                 CloseModal()
                             })
@@ -229,4 +219,4 @@ export default function BanksPage() {
     </ >
   );
 }
-BanksPage.layout = IndexPage;
+TransferPage.layout = IndexPage;

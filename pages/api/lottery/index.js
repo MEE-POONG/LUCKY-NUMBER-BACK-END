@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
-                const data = await prisma.banks.findMany({ include: { user: true } });
+                const data = await prisma.lottery.findMany({ include: { user: true } });
                 res.status(200).json(data)
             } catch (error) {
                 res.status(400).json({ success: false })
@@ -16,11 +16,10 @@ export default async function handler(req, res) {
             break
             case 'POST':
             try {
-                await prisma.banks.create({
+                await prisma.lottery.create({
                     data: {
-                        accountname: parseInt(req.body.accountname),
-                        namebank: parseInt(req.body.namebank),
-                        numberbank: parseInt(req.body.numberbank),
+                        addlottery: parseInt(req.body.addlottery),
+                        amount: parseInt(req.body.amount),
                         userId: req.body.userId,        
                     }   
                 })
