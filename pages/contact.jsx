@@ -1,10 +1,11 @@
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import IndexPage from "components/layouts/IndexPage";
-import { useRouter } from 'next/router';
-import { Container, Table, Button, Form, OverlayTrigger, Badge, Modal } from 'react-bootstrap';
+// import { useRouter } from 'next/router';
+import { Container, Image, Table, Button, Form, OverlayTrigger, Badge, Modal, Row } from 'react-bootstrap';
+// import Editor from '@/components/Ckeditor/Editor';
+import useAxios from 'axios-hooks';
 import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
-import useAxios from 'axios-hooks'
 
 export default function ContactPage() {
 
@@ -36,13 +37,13 @@ export default function ContactPage() {
 
   const ShowModalEdit = async (id) => { 
    await getContactById({url: '/api/contact/'+id,method:'GET'});
-         setShowModalEdit(true);
+    setShowModalEdit(true);
    }
-  const CloseModal = () => { setShowModalEdit(false) };
+  const CloseModal = () => {setShowModalEdit(false) };
 
-  if (  contactByIdLoading || updateContactLoading ) return <p>Loading...</p>
-  if (  contactByIdError || updateContactError ) return <p>Error!</p>
 
+  if (loading || contactByIdLoading || updateContactLoading) return <p>Loading...</p>
+  if (error || contactByIdError || updateContactError) return <p>Error!</p>
   return (
     <>
       <Head>
@@ -96,9 +97,9 @@ export default function ContactPage() {
         </div>
       </Container>
 
-      <Modal show={ShowModalEdit} onHide={CloseModal} centered className="bg-templant">
+      <Modal show={showModalEdit} onHide={CloseModal} centered className="bg-templant">
                 <Modal.Header closeButton >
-                    <Modal.Title>เพิ่มข้อมูลติดต่อ</Modal.Title>
+                    <Modal.Title>แก้ไขข้อมูลติดต่อ</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
           
@@ -136,7 +137,7 @@ export default function ContactPage() {
                     
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={CloseModal}>
+                <Button variant="secondary" onClick={CloseModal}>
                         ยกเลิก
                     </Button>
                     <Button variant="success" onClick={() => {
@@ -166,7 +167,7 @@ export default function ContactPage() {
                             })
                         })
                     }}>
-                        เพิ่ม
+                        แก้ไข
                     </Button>
                 </Modal.Footer>
             </Modal>
