@@ -118,6 +118,7 @@ export default function NumberTypePage() {
                         }).then(() => {
                             Promise.all([
                               setName(''),
+                              getLottotype()
                               
                             ]).then(() => {
                                 CloseModal()
@@ -159,7 +160,7 @@ export default function NumberTypePage() {
                           }).then(() => {
                             Promise.all([
                               setName(''),
-                             
+                              getLottotype()
                             ]).then(() => {
                                 CloseModal()
                             })

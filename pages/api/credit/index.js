@@ -18,9 +18,9 @@ export default async function handler(req, res) {
             try {
                 await prisma.credit.create({
                     data: {
-                        addcreate: parseInt(req.body.addcreate),
+                        addcredit: parseInt(req.body.addcredit),
                         amount: parseInt(req.body.amount),
-                        userId: req.body.userId               
+                        userId: req.body.userId,        
                     }   
                 })
                 res.status(201).json({ success: true })

@@ -8,7 +8,7 @@ import useAxios from 'axios-hooks'
 
 export default function TransferPage() {
   const [{ data: creditData }, getCredit] = useAxios({ url: '/api/credit' })
-  const [{ data: userData }, getUsers] = useAxios({ url: '/api/user' })
+  const [{ data: userData }, getUsers] = useAxios({ url: '/api/users' })
 
   const [{ data: postData, error: errorMessage, loading: creditLoading }, executeCredit] = useAxios({ url: '/api/credit', method: 'POST' }, { manual: true });
 
@@ -24,9 +24,10 @@ export default function TransferPage() {
 
   
   useEffect(()=>{
-    setUserName(creditById?.username)
+    setUserName(creditById?.userId)
     setAddCredit(creditById?.addcredit)
     setAmount(creditById?.amount)
+    
 
   },[creditById])
 
@@ -102,20 +103,24 @@ export default function TransferPage() {
                     <Modal.Title>เพิ่มสมาชิก</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-              
+
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>username</Form.Label>
-                        <Form.Control type="text" value={username} onChange={event => setUserName(event.target.value)}  />
+                    <Form.Select value={username} onChange={event => setUserName(event.target.value)}>
+                            <option value="">username</option>
+                            {userData?.map((user, index) => (
+                                <option key={index} value={user.id}>{user.username}</option>
+                            ))}
+                        </Form.Select>
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>credit เข้า</Form.Label>
-                        <Form.Control type="text" value={addcredit} onChange={event => setAddCredit(event.target.value)} />
+                        <Form.Control type="number" value={addcredit} onChange={event => setAddCredit(event.target.value)} />
                     </Form.Group>
                     
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>credit ทั้งหมด</Form.Label>
-                        <Form.Control type="text" value={amount} onChange={event => setAmount(event.target.value)} />
+                        <Form.Control type="number" value={amount} onChange={event => setAmount(event.target.value)} />
                     </Form.Group>
                     
                 </Modal.Body>
@@ -125,8 +130,8 @@ export default function TransferPage() {
                     </Button>
                     <Button variant="success" onClick={async event => {
                         await executeCredit({
-                            data: {
-                                userId:userID,
+                            data: {                        
+                                userId:username,
                                 addcredit:addcredit,
                                 amount:amount,
                             }
@@ -135,7 +140,8 @@ export default function TransferPage() {
                               setUserName(''),
                               setAddCredit(''),
                               setAmount(''),
-                              getUser()
+                              getCredit(),
+                              getUsers(),
                             ]).then(() => {
                                 CloseModal()
                             })
