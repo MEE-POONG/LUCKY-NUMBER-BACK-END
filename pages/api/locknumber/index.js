@@ -17,7 +17,7 @@ export default async function handler(req, res) {
             try {
                 await prisma.locknumber.create({
                     data: {
-                       name : req.body.name
+                       name : req.body.name,
                     }
                 })
                 res.status(201).json({ success: true })
