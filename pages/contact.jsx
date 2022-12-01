@@ -1,11 +1,48 @@
-import Head from "next/head";
+import Head from 'next/head';
+import { useEffect, useState } from 'react';
 import IndexPage from "components/layouts/IndexPage";
-import { useRouter } from "next/router";
-import { Container, Image, Row } from "react-bootstrap";
-import React from "react";
+import { useRouter } from 'next/router';
+import { Container, Table, Button, Form, OverlayTrigger, Badge, Modal } from 'react-bootstrap';
+import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
+import useAxios from 'axios-hooks'
 
 export default function ContactPage() {
-  const router = useRouter();
+
+
+  const [{data: contactData, loading, error}, getContact] = useAxios({url: '/api/contact'})
+  const [{ data: contactById , loading: contactByIdLoading , error: contactByIdError},getContactById] = useAxios({},{ manual: true } )
+  const [{ loading: updateContactLoading, error: updateContactError }, executeContactPut] = useAxios({},{manual: true})
+
+  const [title, setTitle] = useState('');
+  const [address, setAddress] = useState('');
+  const [tel, setTel] = useState('');
+  const [line, setLine] = useState('');
+  const [titleOpenDate, setTitleOpenDate] = useState('');
+  const [openTime, setOpenTime] = useState('');
+
+
+  useEffect(()=>{
+    setTitle(contactById?.title)
+    setAddress(contactById?.address)
+    setTel(contactById?.tel)
+    setLine(contactById?.line)
+    setTitleOpenDate(contactById?.titleOpenDate)
+    setOpenTime(contactById?.openTime)
+
+ 
+  },[contactById])
+
+  const [showModalEdit, setShowModalEdit] = useState(false);
+
+  const ShowModalEdit = async (id) => { 
+   await getContactById({url: '/api/contact/'+id,method:'GET'});
+         setShowModalEdit(true);
+   }
+  const CloseModal = () => { setShowModalEdit(false) };
+
+  if (  contactByIdLoading || updateContactLoading ) return <p>Loading...</p>
+  if (  contactByIdError || updateContactError ) return <p>Error!</p>
+
   return (
     <>
       <Head>
@@ -13,87 +50,128 @@ export default function ContactPage() {
         <meta name="description" content="I2AROBOT 2" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <link rel="icon" href="/favicon.ico" />
       <Container fluid className=" pt-4 px-4">
-        <Row className=" g-4">
-          <div className="col-sm-6 col-xl-6">
-            <div className="bg-secondary rounded h-100 p-4">
-              <h6 className="mb-4"> ข้อมูลติดต่อ </h6>
-              <form>
+        <div className="bg-secondary rounded p-4">
+          <div className="d-flex align-items-center justify-content-between mb-4">
+            <h5 className="mb-0 w-m-max me-2">ข้อมูลติดต่อ</h5>
+          </div>
 
-             
-                <div className="mb-3">
-                  <label for=" titleName " className="form-label">
-                    ชื่อของร้าน
-                  </label>
-                  <input type="text"className="form-control" placeholder="Lucky Number" />    
-                </div>
+          <div className="d-flex align-items-center border-bottom py-2">
+            <div className="table-responsive w-100">
+              <Table className="table table-striped text-start align-middle  align-items-center table-hover ">
+
+                <thead>
+                  <tr>
+                    <th >ชื่อของร้าน</th>
+                    <th >ที่อยู่</th>
+                    <th >เบอร์โทรศัพท์</th>
+                    <th >ไลน์</th>   
+                    <th >วันทำการ</th>
+                    <th >เวลาเปิด-ปิด</th>
+                    <th >จัดการ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {contactData?.map((contact,index) => (
+                     <tr key={index}>
+                    <td>{contact.title}</td>
+                    <td>{contact.address} </td>
+                    <td>{contact.tel}</td>
+                    <td>{contact.line}</td>
+                    <td>{contact.titleOpenDate}</td>
+                    <td>{contact.openTime}</td>
                   
-
-                  <div className="mb-3">
-                  <label for="address" className="form-label">
-                    ที่อยู่ติดต่อ
-                  </label>
-                  <input type="text" className="form-control" placeholder=" 44/4 "/>
-                  </div>
-
-                  <div className="mb-3">
-                    <label for="opentime" className="form-label">
-                      เวลาทำการ
-                    </label>
-                    <input type="text" className="form-control" placeholder="11.00-00.00 "/>
-                  </div>
-
-                  <div className="mb-3">
-                    <label for="tel" className="form-label">
-                      เบอร์โทรศัพท์
-                    </label>
-                    <input type="tel" className="form-control" placeholder="065-065-8538" />
-                  </div>
-
-                  <div className="mb-3">
-                    <label for="line" className="form-label">
-                      ไลน์
-                    </label>
-                    <input type="text" className="form-control" placeholder="@LuckyNumber" />
-                  </div>
-
-                <button
-                  variant="success"
-                  onClick={() => {
-                    executeContactPut({
-                      url: "/api/Contact" + contact.id,
-                      method: "PUT",
-                      data: {
-                        titleName: titleName,
-                        address: address,
-                        tel: tel,
-                        opentime: opentime,
-                        line: line,
-                        titleOpenDate: titleOpenDate,
-                      },
-                    }).then(() => {
-                      Promise.all([
-                        settitleName(""),
-                        setAddress(""),
-                        setTel(""),
-                        setOpentime(""),
-                        setLine(""),
-                        setTitleOpenDate(""),
-                        getContact(""),
-                      ]).then(() => {
-                        closeModal()
-                      });
-                    });
-                  }}>
-                      บันทึก
-                  </button>
-
-              </form>
+                    <td>
+                    <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(contact.id)}><FaEdit /></a>
+          
+                                          
+                    </td>
+                  </tr>
+                  ))}
+                </tbody>
+              </Table>
             </div>
           </div>
-        </Row>
+        </div>
       </Container>
-    </>
+
+      <Modal show={ShowModalEdit} onHide={CloseModal} centered className="bg-templant">
+                <Modal.Header closeButton >
+                    <Modal.Title>เพิ่มข้อมูลติดต่อ</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+          
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>ชื่อของร้าน</Form.Label>
+                        <Form.Control type="text" value={title} onChange={event => setTitle(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>ที่อยู่ติดต่อ</Form.Label>
+                        <Form.Control type="text" value={address} onChange={event => setAddress(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>เบอร์โทรศัพท์</Form.Label>
+                        <Form.Control type="text" value={tel} onChange={event => setTel(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>ไลน์</Form.Label>
+                        <Form.Control type="line" value={line} onChange={event => setLine(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>วันทำการ</Form.Label>
+                        <Form.Control type="titleOpenDate" value={titleOpenDate} onChange={event => setTitleOpenDate(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>เวลาเปิด-ปิด</Form.Label>
+                        <Form.Control type="openTime" value={openTime} onChange={event => setOpenTime(event.target.value)} />
+                    </Form.Group>
+                    
+                   
+                    
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={CloseModal}>
+                        ยกเลิก
+                    </Button>
+                    <Button variant="success" onClick={() => {
+                             executeContactPut({
+                                  url:'/api/contact'+ contactById?.id,
+                                  method: 'PUT',
+                              data: {
+                                title: title,
+                                address: address,
+                                tel: tel,
+                                line: line,
+                                titleOpenDate: titleOpenDate,
+                                openTime: openTime,
+
+                            }
+                          }).then(() => {
+                          Promise.all([
+                            setTitle(""),
+                            setAddress(""),
+                            setTel(""),
+                            setLine(""),
+                            setTitleOpenDate(""),
+                            setOpenTime(""),
+                            
+                          ]).then(() => {
+                                CloseModal()
+                            })
+                        })
+                    }}>
+                        เพิ่ม
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+    </ >
   );
 }
 ContactPage.layout = IndexPage;
