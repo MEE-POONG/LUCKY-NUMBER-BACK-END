@@ -1,12 +1,10 @@
 import Head from 'next/head';
-
 import IndexPage from "components/layouts/IndexPage";
-
-
 import { useRouter } from 'next/router';
 
 import { Container, Image, Row } from 'react-bootstrap';
-export default function BlankPage() {
+
+export default function BanksPage() {
   const router = useRouter();
   return (
     < >
@@ -28,4 +26,4 @@ export default function BlankPage() {
     </ >
   );
 }
-BlankPage.layout = IndexPage;
+BanksPage.layout = IndexPage;
