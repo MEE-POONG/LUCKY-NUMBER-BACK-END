@@ -9,7 +9,7 @@ import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 
 export default function AboutPage() {
     const [{data: aboutData, loading, error}, getAbout] = useAxios({url: '/api/about'})
-    const [{ data: aboutById , loading: aboutByIdLoading , error: aboutByIdError},getAboutById] = useAxios({},{ manual: true } )
+    const [{ data: aboutById , loading: aboutByIdLoading , error: aboutByIdError}, getAboutById] = useAxios({},{ manual: true } )
     const [{ loading: updateAboutLoading, error: updateAboutError }, executeAboutPut] = useAxios({},{manual: true})
 
 
@@ -18,15 +18,16 @@ export default function AboutPage() {
     const [image, setImage] = useState([])
     const [imageURL, setImageURL] = useState([])
 
-    const [title, SetTitle] = useState('');
-    const [subtitle, SetSubtitle] = useState('');
-    const [detail, SetDetail] = useState('');
+    const [title, setTitle] = useState('');
+    const [subtitle, setSubtitle] = useState('');
+    const [detail, setDetail] = useState('');
     const [img, setImg] = useState('');
 
    useEffect(() =>{
-    SetTitle(aboutById?.title)
-    SetSubtitle(aboutById?.subtitle)
-    SetDetail(aboutById?.detail)
+    setTitle(aboutById?.title)
+    setSubtitle(aboutById?.subtitle)
+    setDetail(aboutById?.detail)
+    setImg(aboutById?.img)
    },[aboutById])
 
     useEffect(() => {
@@ -37,7 +38,7 @@ export default function AboutPage() {
         setImageURL(newImageUrl)
     }, [image])
 
-    const onImageProductChange = (e) => {
+    const onImageAboutChange = (e) => {
         setImage([...e.target.files])
     }
 
@@ -45,14 +46,14 @@ export default function AboutPage() {
     const [showModalEdit, setShowModalEdit] = useState(false);
 
     const ShowModalEdit = async (id) => { 
-     await getUserById({url: '/api/about/'+id,method:'GET'});
+     await getAboutById({url: '/api/about/'+id,method:'GET'});
       setShowModalEdit(true);
      }
     const CloseModal = () => {setShowModalEdit(false) };
   
 
-    if (aboutByIdLoading || updateAboutLoading) return <p>Loading...</p>
-    if (aboutByIdError || updateAboutError) return <p>Error!</p>
+    if (loading || aboutByIdLoading || updateAboutLoading) return <p>Loading...</p>
+    if (error || aboutByIdError || updateAboutError) return <p>Error!</p>
     return (
         < >
             <Head>
@@ -90,7 +91,7 @@ export default function AboutPage() {
                             <td>{about.subtitle}</td>
                             <td>{about.detail}</td>
                             <td>
-                            <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(about.id)}><FaEdit /></a>
+                            <a className="btn btn-sm btn-success me-2" onClick={() =>ShowModalEdit(about.id)}><FaEdit /></a>
                             </td>
                         </tr>
                         ))}
@@ -110,9 +111,9 @@ export default function AboutPage() {
                 <Modal.Body>
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label className='d-block'>รูปสินค้า</Form.Label>
-                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={img} alt="product_img" fluid rounded />}
-                        {imageURL?.map((imageSrcProduct, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcProduct} alt="about_img" fluid rounded />)}
-                        <Form.Control type="file" accept="image/*" onChange={onImageProductChange} />
+                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={img} alt="about_img" fluid rounded />}
+                        {imageURL?.map((imageSrcAbout, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcAbout} alt="about_img" fluid rounded />)}
+                        <Form.Control type="file" accept="image/*" onChange={onImageAboutChange} />
                     </Form.Group>
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>Title</Form.Label>
@@ -120,12 +121,12 @@ export default function AboutPage() {
                     </Form.Group>
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>Subtitle</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={subtitle} onChange={event => SetSubtitle(event.target.value)} />
+                        <Form.Control as="textarea" rows={3} value={subtitle} onChange={event => setSubtitle(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>รายละเอียด</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={subtitle} onChange={event => SetSubtitle(event.target.value)} />
+                        <Form.Control as="textarea" rows={3} value={detail} onChange={event => setDetail(event.target.value)} />
                     </Form.Group>
 
                 </Modal.Body>
@@ -135,8 +136,8 @@ export default function AboutPage() {
                     </Button>
                     <Button variant="success" onClick={() => {
 
-                        executeProductPut({
-                            url: '/api/about/' + productById?.id,
+                        executeAboutPut({
+                            url: '/api/about/' + aboutById?.id,
                             method: 'PUT',
                             data: {
                                 title: title,
@@ -146,9 +147,9 @@ export default function AboutPage() {
                         }).then(() => {
                             Promise.all([
                                 setTitle(''),
-                                SetSubtitle(''),
-                                SetDetail(''),
-                                getProducts()
+                                setSubtitle(''),
+                                setDetail(''),
+                                getAbout()
                               
                             ]).then(() => {
                                 CloseModal()

@@ -1,4 +1,3 @@
-
 import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient()
 
@@ -7,11 +6,12 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
-                const data = await prisma.about.findFirst({
+                const data = await prisma.contact.findFirst({
                     where: {
                         id: req.query.id
                     }
                 });
+                // prisma.$disconnect();
                 res.status(200).json(data)
             } catch (error) {
                 res.status(400).json({ success: false })
@@ -19,15 +19,18 @@ export default async function handler(req, res) {
             break
         case 'PUT':
             try {
-                await prisma.about.update({
+                await prisma.contact.update({
                     where: {
                         id: req.query.id
                     },
                     data: {
                         title: req.body.title,
-                        subtitle: req.body.subtitle,
-                        detail: req.body.detail,
-                        image: req.body.image,
+                        address: req.body.address,
+                        tel: req.body.tel,
+                        line: req.body.line,
+                        titleOpenDate: req.body.titleOpenDate,
+                        openTime: req.body.openTime,
+                       
                     }
                 })
                 // prisma.$disconnect();
