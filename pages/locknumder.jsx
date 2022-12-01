@@ -8,37 +8,37 @@ import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import useAxios from 'axios-hooks'
 
 
-export default function NumberTypePage() {
-    const [{ data: lottotypeData }, getLottotype] = useAxios({ url: '/api/lottotype' })
+export default function LockNumderPage() {
+    const [{ data: locknumderData }, getLocknumder] = useAxios({ url: '/api/locknumder' })
 
-    const [{ data: postData, error: errorMessage, loading: lottotypeLoading }, executeLottotype] = useAxios({ url: '/api/lottotype', method: 'POST' }, { manual: true });
+    const [{ data: postData, error: errorMessage, loading: locknumderLoading }, executeLocknumder] = useAxios({ url: '/api/locknumder', method: 'POST' }, { manual: true });
   
-    const [{ data: lottotypeById , loading: lottotypeByIdLoading , error: lottotypeByIdError},getLottotypeById] = useAxios({},{ manual: true } )
+    const [{ data: locknumderById , loading: locknumderByIdLoading , error: locknumderByIdError},getLocknumderById] = useAxios({},{ manual: true } )
     
-    const [{ loading: updateLottotypeLoading, error: updateLottotypeError }, executeLottotypePut] = useAxios({},{manual: true})
+    const [{ loading: updateLocknumderLoading, error: updateLocknumderError }, executeLocknumderPut] = useAxios({},{manual: true})
   
-    const [{loading: deleteLottotypeLoading , error: deleteLottotypeError},executeLottotypeDelete]= useAxios({},{manual: true})
+    const [{loading: deleteLocknumderLoading , error: deleteLocknumderError},executeLocknumderDelete]= useAxios({},{manual: true})
   
     const [name, setName] = useState('');
    
     
     useEffect(()=>{
-      setName(lottotypeById?.name)
+      setName(locknumderById?.name)
     
-    },[lottotypeById])
+    },[locknumderById])
   
     const [showModalCreate, setShowModalCreate] = useState(false);
     const [showModalEdit, setShowModalEdit] = useState(false);
   
     const ShowModalCreate = () => setShowModalCreate(true);
     const ShowModalEdit = async (id) => { 
-     await getLottotypeById({url: '/api/lottotype/'+id,method:'GET'});
+     await getLocknumderById({url: '/api/locknumder/'+id,method:'GET'});
       setShowModalEdit(true);
      }
     const CloseModal = () => { setShowModalCreate(false), setShowModalEdit(false) };
   
-    if ( lottotypeLoading || lottotypeByIdLoading || updateLottotypeLoading ||deleteLottotypeLoading) return <p>Loading...</p>
-    if (errorMessage || lottotypeByIdError || updateLottotypeError ||deleteLottotypeError) return <p>Error!</p>
+    if ( locknumderLoading || locknumderByIdLoading || updateLocknumderLoading ||deleteLocknumderLoading) return <p>Loading...</p>
+    if (errorMessage || locknumderByIdError || updateLocknumderError ||deleteLocknumderError) return <p>Error!</p>
 
 
 
@@ -69,14 +69,14 @@ export default function NumberTypePage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {lottotypeData?.map((lottotype,index) => (
+                  {locknumderData?.map((locknumder,index) => (
                      <tr key={index}>
-                    <td>{lottotype.name}</td>
+                    <td>{locknumder.name}</td>
                    
                     <td>
-                    <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(lottotype.id)}><FaEdit /></a>
-                                            <a className="btn btn-sm btn-danger me-2" onClick={()=> executeLottotypeDelete({
-                                                url: '/api/lottotype/'+lottotype.id,
+                    <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(locknumder.id)}><FaEdit /></a>
+                                            <a className="btn btn-sm btn-danger me-2" onClick={()=> executeLocknumderDelete({
+                                                url: '/api/locknumder/'+locknumder.id,
                                                 method: 'DELETE'
 
                                             })}><FaTrash /></a>
@@ -110,7 +110,7 @@ export default function NumberTypePage() {
                         ยกเลิก
                     </Button>
                     <Button variant="success" onClick={async event => {
-                        await executeLottotype({
+                        await executeLocknumder({
                             data: {
                                 name:name,
                                
@@ -149,8 +149,8 @@ export default function NumberTypePage() {
                         ยกเลิก
                     </Button>
                     <Button variant="success" onClick={() => {
-                        executeLottotypePut({
-                            url: '/api/lottotype/' + lottotypeById?.id,
+                        executeLocknumderPut({
+                            url: '/api/locknumder/' + locknumderById?.id,
                             method: 'PUT',
                             data: {
                               name: name,
@@ -178,4 +178,4 @@ export default function NumberTypePage() {
     </>
   );
 }
-NumberTypePage.layout = IndexPage;
+LockNumderPage.layout = IndexPage;
