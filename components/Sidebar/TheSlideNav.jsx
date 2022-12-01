@@ -120,6 +120,9 @@ export default function TheSlideNav() {
                 <Link id="contact" href="/contact">
                   <a className="dropdown-item">ข้อมูลติดต่อ</a>
                 </Link>
+                <Link id="contact" href="/sliderpicture">
+                  <a className="dropdown-item">สไลด์รูปภาพ</a>
+                </Link>
               </Dropdown.Menu>
             </Dropdown>
           </div>
