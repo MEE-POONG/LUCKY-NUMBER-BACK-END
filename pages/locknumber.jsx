@@ -64,7 +64,7 @@ export default function LockNumberPage() {
               <Table className="table table-striped text-start align-middle  align-items-center table-hover ">
                 <thead>
                   <tr>
-                    <th>เพิ่มเลขอั้น
+                    <th>เลขอั้น
                         
                     </th>
                    <th>จัดการ </th>
@@ -94,12 +94,12 @@ export default function LockNumberPage() {
 
       <Modal show={showModalCreate} onHide={CloseModal} centered className="bg-templant">
                 <Modal.Header closeButton >
-                    <Modal.Title>เพิ่มประเภทหวย</Modal.Title>
+                    <Modal.Title>เพิ่มเลขอั้น</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
               
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อ ประเภทหวย</Form.Label>
+                        <Form.Label>ชื่อ เลขอั้น</Form.Label>
                         <Form.Control type="text" value={name} onChange={event => setName(event.target.value)} />
                     </Form.Group>
 
@@ -120,6 +120,7 @@ export default function LockNumberPage() {
                         }).then(() => {
                             Promise.all([
                               setName(''),
+                              getLocknumber()
                               
                             ]).then(() => {
                                 CloseModal()
@@ -134,12 +135,12 @@ export default function LockNumberPage() {
 
             <Modal show={showModalEdit} onHide={CloseModal} centered className="bg-templant">
             <Modal.Header closeButton >
-                    <Modal.Title>เพิ่มประเภทหวย</Modal.Title>
+                    <Modal.Title>แก้ไข เลขอั้น</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
               
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อ ประเภทหวย</Form.Label>
+                        <Form.Label> เลขอั้น</Form.Label>
                         <Form.Control type="text" value={name} onChange={event => setName(event.target.value)} />
                     </Form.Group>
 
@@ -161,6 +162,7 @@ export default function LockNumberPage() {
                           }).then(() => {
                             Promise.all([
                               setName(''),
+                              getLocknumber()
                              
                             ]).then(() => {
                                 CloseModal()
