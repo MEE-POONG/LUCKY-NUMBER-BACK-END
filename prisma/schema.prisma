@@ -19,7 +19,6 @@ model User {
   deleted_at DateTime?    @map("deleted_at")
   banks      Banks[]
   credits    Credit[]
-  lotterys   Lottery[]
   orderlotto Orderlotto[]
 }
 
@@ -81,7 +80,6 @@ model Lottotype {
 
 model Lottery {
   id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId      String?       @db.Uuid
   numberlotto String?
   price       Int?
   lottotypeId String?       @db.Uuid
@@ -89,7 +87,6 @@ model Lottery {
   updatedAt   DateTime?     @updatedAt
   deleted_at  DateTime?    @map("deleted_at")
   lottotype   Lottotype?    @relation(fields: [lottotypeId], references: [id])
-  user        User?         @relation(fields: [userId], references: [id])
   orderlotto  Orderlotto[]
 }
 
