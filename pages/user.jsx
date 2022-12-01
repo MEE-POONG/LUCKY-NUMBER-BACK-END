@@ -83,7 +83,7 @@ export default function TransferPage() {
                     <td>{user.fname} {user.lname}</td>
                     <td>{user.tel}</td>
                     <td>
-                    <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(product.id)}><FaEdit /></a>
+                    <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(user.id)}><FaEdit /></a>
                                             <a className="btn btn-sm btn-danger me-2" onClick={()=> executeProductDelete({
                                                 url: '/api/users/'+product.id,
                                                 method: 'DELETE'
