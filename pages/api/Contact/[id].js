@@ -6,12 +6,12 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
-                const data = await prisma.contact.findMany({
+                const data = await prisma.contact.findFirst({
                     where: {
                         id: req.query.id
                     }
                 });
-
+                prisma.$disconnect();
                 res.status(200).json(data)
             } catch (error) {
                 res.status(400).json({ success: false })
@@ -20,8 +20,8 @@ export default async function handler(req, res) {
         case 'PUT':
             try {
                 await prisma.contact.update({
-                    where : {
-                        id: req.body.id
+                    where: {
+                        id: req.query.id
                     },
                     data: {
                         title: req.body.title,
@@ -32,14 +32,27 @@ export default async function handler(req, res) {
                         titleOpenDate: req.body.titleOpenDate,
                     }
                 })
+                prisma.$disconnect();
                 res.status(201).json({ success: true })
             } catch (error) {
-                console.log(error);
+                res.status(400).json({ success: false })
+            }
+            break
+        case 'DELETE':
+            try {
+                await prisma.product.delete({
+                    where: {
+                        id: req.query.id
+                    }
+                });
+                prisma.$disconnect();
+                res.status(204).json({ success: true })
+            } catch (error) {
                 res.status(400).json({ success: false })
             }
             break
         default:
-            res.setHeader('Allow', ['GET', 'PUT'])
+            res.setHeader('Allow', ['GET', 'POST'])
             res.status(405).end(`Method ${method} Not Allowed`)
     }
 }
