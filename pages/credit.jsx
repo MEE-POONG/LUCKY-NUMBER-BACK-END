@@ -27,8 +27,6 @@ export default function TransferPage() {
     setUserName(creditById?.userId)
     setAddCredit(creditById?.addcredit)
     setAmount(creditById?.amount)
-    
-
   },[creditById])
 
   const [showModalCreate, setShowModalCreate] = useState(false);
@@ -36,7 +34,7 @@ export default function TransferPage() {
 
   const ShowModalCreate = () => setShowModalCreate(true);
   const ShowModalEdit = async (id) => { 
-   await getCreditById({url: '/api/credit'+id,method:'GET'});
+   await getCreditById({url: '/api/credit/'+id,method:'GET'});
     setShowModalEdit(true);
    }
   const CloseModal = () => { setShowModalCreate(false), setShowModalEdit(false) };
@@ -159,18 +157,22 @@ export default function TransferPage() {
                 <Modal.Body>
               
                 <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>username</Form.Label>
-                        <Form.Control type="text" value={username} onChange={event => setUserName(event.target.value)} readOnly />
+                    <Form.Select value={username} onChange={event => setUserName(event.target.value)}  >
+                            <option value="">username</option>
+                            {userData?.map((user, index) => (
+                                <option key={index} value={user.id}>{user.username}</option>
+                            ))}
+                        </Form.Select>
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>credit เข้า</Form.Label>
-                        <Form.Control type="text" value={addcredit} onChange={event => setAddCredit(event.target.value)} />
+                        <Form.Control type="number" value={addcredit} onChange={event => setAddCredit(event.target.value)} />
                     </Form.Group>
                     
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>credit ทั้งหมด</Form.Label>
-                        <Form.Control type="text" value={amount} onChange={event => setAmount(event.target.value)} />
+                        <Form.Control type="number" value={amount} onChange={event => setAmount(event.target.value)} />
                     </Form.Group>
     
                 </Modal.Body>
@@ -183,7 +185,7 @@ export default function TransferPage() {
                             url: '/api/credit/' + creditById?.id,
                             method: 'PUT',
                             data: {
-                                username:username,
+                                userId:username,
                                 addcredit:addcredit,
                                 amount:amount,
                             }
@@ -192,7 +194,8 @@ export default function TransferPage() {
                                 setUserName(''),
                                 setAddCredit(''),
                                 setAmount(''),
-                                getUser()
+                                getCredit(),
+                                getUsers(),
                             ]).then(() => {
                                 CloseModal()
                             })
