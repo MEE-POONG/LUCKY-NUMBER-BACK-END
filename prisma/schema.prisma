@@ -105,7 +105,7 @@ model Orderlotto {
   user       User      @relation(fields: [userId], references: [id])
 }
 
-model locknumber {
+model Locknumber {
   id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name       String
   createdAt  DateTime  @default(now())
