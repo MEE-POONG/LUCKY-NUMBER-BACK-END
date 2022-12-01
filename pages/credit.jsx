@@ -7,43 +7,41 @@ import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import useAxios from 'axios-hooks'
 
 export default function TransferPage() {
-  const [{ data: usersData }, getUsers] = useAxios({ url: '/api/users' })
+  const [{ data: creditData }, getCredit] = useAxios({ url: '/api/credit' })
+  const [{ data: userData }, getUsers] = useAxios({ url: '/api/user' })
 
-  const [{ data: postData, error: errorMessage, loading: userLoading }, executeUser] = useAxios({ url: '/api/users', method: 'POST' }, { manual: true });
+  const [{ data: postData, error: errorMessage, loading: creditLoading }, executeCredit] = useAxios({ url: '/api/credit', method: 'POST' }, { manual: true });
 
-  const [{ data: userById , loading: userByIdLoading , error: userByIdError},getUserById] = useAxios({},{ manual: true } )
+  const [{ data: creditById , loading: creditByIdLoading , error: creditByIdError},getCreditById] = useAxios({},{ manual: true } )
   
-  const [{ loading: updateUserLoading, error: updateUserError }, executeUserPut] = useAxios({},{manual: true})
+  const [{ loading: updateCreditLoading, error: updateCreditError }, executeCreditPut] = useAxios({},{manual: true})
 
-  const [{loading: deleteUserLoading , error: deleteUserError},executeUserDelete]= useAxios({},{manual: true})
+  const [{loading: deleteCreditLoading , error: deleteCreditError},executeCreditDelete]= useAxios({},{manual: true})
 
   const [username, setUserName] = useState('');
-  const [fname, setFname] = useState('');
-  const [lname, setLname] = useState('');
-  const [tel, setTel] = useState('');
-  const [password, setPassword] = useState('');
+  const [addcredit, setAddCredit] = useState('');
+  const [amount, setAmount] = useState('');
 
   
   useEffect(()=>{
-    setUserName(userById?.username)
-    setFname(userById?.fname)
-    setLname(userById?.lname)
-    setTel(userById?.tel)
-    setPassword(userById?.password)
-  },[userById])
+    setUserName(creditById?.username)
+    setAddCredit(creditById?.addcredit)
+    setAmount(creditById?.amount)
+
+  },[creditById])
 
   const [showModalCreate, setShowModalCreate] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
 
   const ShowModalCreate = () => setShowModalCreate(true);
   const ShowModalEdit = async (id) => { 
-   await getUserById({url: '/api/users/'+id,method:'GET'});
+   await getCreditById({url: '/api/credit'+id,method:'GET'});
     setShowModalEdit(true);
    }
   const CloseModal = () => { setShowModalCreate(false), setShowModalEdit(false) };
 
-  if ( userLoading || userByIdLoading || updateUserLoading ||deleteUserLoading) return <p>Loading...</p>
-  if (errorMessage || userByIdError || updateUserError ||deleteUserError) return <p>Error!</p>
+  if ( creditLoading || creditByIdLoading || updateCreditLoading ||deleteCreditLoading) return <p>Loading...</p>
+  if (errorMessage || creditByIdError || updateCreditError ||deleteCreditError) return <p>Error!</p>
 
   return (
     < >
@@ -71,21 +69,21 @@ export default function TransferPage() {
                 <thead>
                   <tr>
                     <th >username</th>
-                    <th >ชื่อ-นามสกุล</th>
-                    <th >เบอร์โทรศัพท์</th>
+                    <th >credit เข้า</th>
+                    <th >credit ทั้งหมด</th>
                     <th >จัดการ</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {usersData?.map((user,index) => (
+                  {creditData?.map((credit,index) => (
                      <tr key={index}>
-                    <td>{user.username}</td>
-                    <td>{user.fname} {user.lname}</td>
-                    <td>{user.tel}</td>
+                    <td>{credit?.user?.username}</td>
+                    <td>{credit.addcredit}</td>
+                    <td>{credit.amount}</td>
                     <td>
-                    <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(user.id)}><FaEdit /></a>
-                                            <a className="btn btn-sm btn-danger me-2" onClick={()=> executeUserDelete({
-                                                url: '/api/users/'+user.id,
+                    <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(credit.id)}><FaEdit /></a>
+                                            <a className="btn btn-sm btn-danger me-2" onClick={()=> executeCreditDelete({
+                                                url: '/api/credit/'+credit.id,
                                                 method: 'DELETE'
 
                                             })}><FaTrash /></a>
@@ -107,26 +105,18 @@ export default function TransferPage() {
               
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>username</Form.Label>
-                        <Form.Control type="text" value={username} onChange={event => setUserName(event.target.value)} />
+                        <Form.Control type="text" value={username} onChange={event => setUserName(event.target.value)}  />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อ</Form.Label>
-                        <Form.Control type="text" value={fname} onChange={event => setFname(event.target.value)} />
-                        <Form.Label>นามสกุล</Form.Label>
-                        <Form.Control type="text" value={lname} onChange={event => setLname(event.target.value)} />
+                        <Form.Label>credit เข้า</Form.Label>
+                        <Form.Control type="text" value={addcredit} onChange={event => setAddCredit(event.target.value)} />
                     </Form.Group>
-
+                    
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>เบอร์โทรศัพท์</Form.Label>
-                        <Form.Control type="text" value={tel} onChange={event => setTel(event.target.value)} />
+                        <Form.Label>credit ทั้งหมด</Form.Label>
+                        <Form.Control type="text" value={amount} onChange={event => setAmount(event.target.value)} />
                     </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>password</Form.Label>
-                        <Form.Control type="password" value={password} onChange={event => setPassword(event.target.value)} />
-                    </Form.Group>
-    
                     
                 </Modal.Body>
                 <Modal.Footer>
@@ -134,22 +124,18 @@ export default function TransferPage() {
                         ยกเลิก
                     </Button>
                     <Button variant="success" onClick={async event => {
-                        await executeUser({
+                        await executeCredit({
                             data: {
-                                username:username,
-                                fname:fname,
-                                lname:lname,
-                                tel:tel,
-                                password:password,
+                                userId:userID,
+                                addcredit:addcredit,
+                                amount:amount,
                             }
                         }).then(() => {
                             Promise.all([
                               setUserName(''),
-                              setFname(''),
-                              setLname(''),
-                              setTel(''),
-                              setPassword(''),
-                              getUsers(),
+                              setAddCredit(''),
+                              setAmount(''),
+                              getUser()
                             ]).then(() => {
                                 CloseModal()
                             })
@@ -166,25 +152,19 @@ export default function TransferPage() {
                 </Modal.Header>
                 <Modal.Body>
               
-                    <Form.Group controlId="formFile" className="mb-3">
+                <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>username</Form.Label>
-                        <Form.Control type="text" value={username} onChange={event => setUserName(event.target.value)} />
+                        <Form.Control type="text" value={username} onChange={event => setUserName(event.target.value)} readOnly />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อ-นามสกุล</Form.Label>
-                        <Form.Control type="text" value={fname} onChange={event => setFname(event.target.value)} />
-                        <Form.Control type="text" value={lname} onChange={event => setLname(event.target.value)} />
+                        <Form.Label>credit เข้า</Form.Label>
+                        <Form.Control type="text" value={addcredit} onChange={event => setAddCredit(event.target.value)} />
                     </Form.Group>
-
+                    
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>เบอร์โทรศัพท์</Form.Label>
-                        <Form.Control type="text" value={tel} onChange={event => setTel(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>password</Form.Label>
-                        <Form.Control type="password" value={password} onChange={event => setPassword(event.target.value)} />
+                        <Form.Label>credit ทั้งหมด</Form.Label>
+                        <Form.Control type="text" value={amount} onChange={event => setAmount(event.target.value)} />
                     </Form.Group>
     
                 </Modal.Body>
@@ -193,24 +173,20 @@ export default function TransferPage() {
                         ยกเลิก
                     </Button>
                     <Button variant="success" onClick={() => {
-                        executeUserPut({
-                            url: '/api/users/' + userById?.id,
+                        executeCreditPut({
+                            url: '/api/credit/' + creditById?.id,
                             method: 'PUT',
                             data: {
-                              username: username,
-                              fname: fname,
-                              lname: lname,
-                              tel: tel,
-                              password: password,
+                                username:username,
+                                addcredit:addcredit,
+                                amount:amount,
                             }
                           }).then(() => {
                             Promise.all([
-                              setUserName(''),
-                              setFname(''),
-                              setLname(''),
-                              setTel(''),
-                              setPassword(''),
-                              getUsers(),
+                                setUserName(''),
+                                setAddCredit(''),
+                                setAmount(''),
+                                getUser()
                             ]).then(() => {
                                 CloseModal()
                             })

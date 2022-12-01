@@ -1,4 +1,3 @@
-
 import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient()
 
@@ -7,7 +6,12 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
-                const data = await prisma.about.findMany();
+                const data = await prisma.credit.findFirst({
+                    where: {
+                        id: req.query.id
+                    }
+                });
+                prisma.$disconnect();
                 res.status(200).json(data)
             } catch (error) {
                 res.status(400).json({ success: false })
@@ -15,19 +19,31 @@ export default async function handler(req, res) {
             break
         case 'PUT':
             try {
-                await prisma.about.update({
+                await prisma.credit.update({
                     where: {
                         id: req.query.id
                     },
                     data: {
-                        title: req.body.title,
-                        subtitle: req.body.subtitle,
-                        detail: req.body.detail,
-                        image: req.body.image,
+                        addcreate: parseInt(req.body.addcreate),
+                        amount: parseInt(req.body.amount),
+                        userId: req.body.userId    
                     }
                 })
-                // prisma.$disconnect();
+                prisma.$disconnect();
                 res.status(201).json({ success: true })
+            } catch (error) {
+                res.status(400).json({ success: false })
+            }
+            break
+        case 'DELETE':
+            try {
+                await prisma.credit.delete({
+                    where: {
+                        id: req.query.id
+                    }
+                });
+                prisma.$disconnect();
+                res.status(204).json({ success: true })
             } catch (error) {
                 res.status(400).json({ success: false })
             }
@@ -37,3 +53,4 @@ export default async function handler(req, res) {
             res.status(405).end(`Method ${method} Not Allowed`)
     }
 }
+
