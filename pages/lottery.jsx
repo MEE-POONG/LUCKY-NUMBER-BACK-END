@@ -7,36 +7,36 @@ import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import useAxios from 'axios-hooks'
 
 
-export default function TransferPage() {
+export default function LotteryPage() {
 
   const [{ data: lotteryData }, getLottery] = useAxios({ url: '/api/lottery' }) 
-  const [{ data: userData }, getUsers] = useAxios({ url: '/api/users' })
+  const [{data: lottotypeData}, getLottotype] = useAxios({ url: '/api/lottotype' })
 
-  const [{ data: postData, error: errorMessage, loading: creditLoading }, executeCredit] = useAxios({ url: '/api/credit', method: 'POST' }, { manual: true });
+  const [{ data: postData, error: errorMessage, loading: lotteryLoading }, executeLottery] = useAxios({ url: '/api/lottery', method: 'POST' }, { manual: true });
 
-  const [{ data: creditById , loading: creditByIdLoading , error: creditByIdError},getCreditById] = useAxios({},{ manual: true } )
+  const [{ data: lotteryById , loading: lotteryByIdLoading , error: lotteryByIdError},getLotteryById] = useAxios({},{ manual: true } )
   
-  const [{ loading: updateCreditLoading, error: updateCreditError }, executeCreditPut] = useAxios({},{manual: true})
+  const [{ loading: updateLotteryLoading, error: updateLotteryError }, executeLotteryPut] = useAxios({},{manual: true})
 
-  const [{loading: deleteCreditLoading , error: deleteCreditError},executeCreditDelete]= useAxios({},{manual: true})
+  const [{loading: deleteLotteryLoading , error: deleteLotteryError},executeLotteryDelete]= useAxios({},{manual: true})
 
-  const [username, setUserName] = useState('');
-  const [addcredit, setAddCredit] = useState('');
-  const [amount, setAmount] = useState('');
+  const [numberlotto, setNumberlotto] = useState('');
+  const [price, setPrice] = useState('');
+  const [type, setType] = useState('');
 
   
   useEffect(()=>{
-    setUserName(creditById?.userId)
-    setAddCredit(creditById?.addcredit)
-    setAmount(creditById?.amount)
-  },[creditById])
+    setNumberlotto(creditById?.numberlotto)
+    setPrice(creditById?.price)
+    setType(creditById?.lotteryId)
+  },[lotteryById])
 
   const [showModalCreate, setShowModalCreate] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
 
   const ShowModalCreate = () => setShowModalCreate(true);
   const ShowModalEdit = async (id) => { 
-   await getCreditById({url: '/api/credit/'+id,method:'GET'});
+   await getLotteryById({url: '/api/lottery/'+id,method:'GET'});
     setShowModalEdit(true);
    }
   const CloseModal = () => { setShowModalCreate(false), setShowModalEdit(false) };
@@ -67,22 +67,22 @@ export default function TransferPage() {
 
                 <thead>
                   <tr>
-                    <th >username</th>
-                    <th >credit เข้า</th>
-                    <th >credit ทั้งหมด</th>
+                    <th >เลขหวย</th>
+                    <th >ราคา</th>
+                    <th >ประเภท</th>
                     <th >จัดการ</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {creditData?.map((credit,index) => (
+                  {lotteryData?.map((lottery,index) => (
                      <tr key={index}>
-                    <td>{credit?.user?.username}</td>
-                    <td>{credit.addcredit}</td>
-                    <td>{credit.amount}</td>
+                    <td>{lottery.addcredit}</td>
+                    <td>{lottery.amount}</td>
+                    <td>{lottery?.user?.username}</td>
                     <td>
-                    <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(credit.id)}><FaEdit/></a>
-                                        <a className="btn btn-sm btn-danger me-2" onClick={()=> executeCreditDelete({
-                                                url: '/api/credit/'+credit.id,
+                    <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(lottery.id)}><FaEdit/></a>
+                                        <a className="btn btn-sm btn-danger me-2" onClick={()=> executeLotteryDelete({
+                                                url: '/api/lottery/'+lottery.id,
                                                 method: 'DELETE'
 
                                             })}><FaTrash /></a>
@@ -219,4 +219,4 @@ export default function TransferPage() {
     </ >
   );
 }
-TransferPage.layout = IndexPage;
+LotteryPage.layout = IndexPage;
