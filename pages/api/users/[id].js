@@ -6,15 +6,11 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
-                const data = await prisma.user.findFirst({ 
-                    include: { 
-                        category: true, 
-                        unit: true
-                     },
-                        where:{
-                            id:req.query.id
-                        } 
-                    });
+                const data = await prisma.user.findFirst({
+                    where: {
+                        id: req.query.id
+                    }
+                });
                 prisma.$disconnect();
                 res.status(200).json(data)
             } catch (error) {
@@ -24,15 +20,15 @@ export default async function handler(req, res) {
         case 'PUT':
             try {
                 await prisma.user.update({
-                    where:{
-                        id:req.query.id
+                    where: {
+                        id: req.query.id
                     },
                     data: {
-                        username: req.body.name,
-                        Fname: req.body.name,
-                        Lname: req.body.name,
-                        tel: req.body.name,
-                        password: req.body.name
+                        username: req.body.username,
+                        fname: req.body.fname,
+                        lname: req.body.lname,
+                        tel: req.body.tel,
+                        password: req.body.password,
                     }
                 })
                 prisma.$disconnect();
@@ -41,13 +37,13 @@ export default async function handler(req, res) {
                 res.status(400).json({ success: false })
             }
             break
-            case 'DELETE':
+        case 'DELETE':
             try {
-                 await prisma.user.delete({ 
-                        where:{
-                            id:req.query.id
-                        } 
-                    });
+                await prisma.user.delete({
+                    where: {
+                        id: req.query.id
+                    }
+                });
                 prisma.$disconnect();
                 res.status(204).json({ success: true })
             } catch (error) {
@@ -59,3 +55,4 @@ export default async function handler(req, res) {
             res.status(405).end(`Method ${method} Not Allowed`)
     }
 }
+
