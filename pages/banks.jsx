@@ -7,6 +7,7 @@ import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import useAxios from 'axios-hooks'
 
 export default function BanksPage() {
+
   const [{ data: banksData }, getBanks] = useAxios({ url: '/api/banks' })
   const [{ data: userData }, getUsers] = useAxios({ url: '/api/users' })
 
@@ -38,7 +39,7 @@ export default function BanksPage() {
 
   const ShowModalCreate = () => setShowModalCreate(true);
   const ShowModalEdit = async (id) => { 
-   await getBanksById({url: '/api/banks'+id,method:'GET'});
+   await getBanksById({url: '/api/banks/'+id,method:'GET'});
     setShowModalEdit(true);
    }
   const CloseModal = () => { setShowModalCreate(false), setShowModalEdit(false) };
@@ -220,7 +221,7 @@ export default function BanksPage() {
                               setNamebank(''),
                               setNumberbank(''),
                               getBanks(),
-                                getUser()
+                              getUser()
                             ]).then(() => {
                                 CloseModal()
                             })

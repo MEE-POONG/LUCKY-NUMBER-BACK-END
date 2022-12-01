@@ -86,7 +86,7 @@ model Lottery {
   createdAt   DateTime?    @default(now())
   updatedAt   DateTime?    @updatedAt
   deleted_at  DateTime?    @map("deleted_at")
-  lottotype   Lottotype?    @relation(fields: [lottotypeId], references: [id])
+  lottotype   Lottotype?   @relation(fields: [lottotypeId], references: [id])
   orderlotto  Orderlotto[]
 }
 

@@ -6,7 +6,7 @@ import { Container, Table, Button, Form, OverlayTrigger, Badge, Modal } from 're
 import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import useAxios from 'axios-hooks'
 
-export default function TransferPage() {
+export default function UserPage() {
   const [{ data: usersData }, getUsers] = useAxios({ url: '/api/users' })
 
   const [{ data: postData, error: errorMessage, loading: userLoading }, executeUser] = useAxios({ url: '/api/users', method: 'POST' }, { manual: true });
@@ -162,7 +162,7 @@ export default function TransferPage() {
 
             <Modal show={showModalEdit} onHide={CloseModal} centered className="bg-templant">
             <Modal.Header closeButton >
-                    <Modal.Title>เพิ่มสมาชิก</Modal.Title>
+                    <Modal.Title>แก้ไขสมาชิก</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
               
@@ -227,4 +227,4 @@ export default function TransferPage() {
     </ >
   );
 }
-TransferPage.layout = IndexPage;
+UserPage.layout = IndexPage;

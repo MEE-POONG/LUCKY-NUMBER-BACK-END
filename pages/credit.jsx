@@ -7,7 +7,7 @@ import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import useAxios from 'axios-hooks'
 
 
-export default function TransferPage() {
+export default function CreditPage() {
 
   const [{ data: creditData }, getCredit] = useAxios({ url: '/api/credit' })
   const [{ data: userData }, getUsers] = useAxios({ url: '/api/users' })
@@ -55,7 +55,7 @@ export default function TransferPage() {
       <Container fluid className=" pt-4 px-4">
         <div className="bg-secondary rounded p-4">
           <div className="d-flex align-items-center justify-content-between mb-4">
-            <h5 className="mb-0 w-m-max me-2">ชื่อผู้ใช้</h5>
+            <h5 className="mb-0 w-m-max me-2">credit ผู้ใช้</h5>
             <Button variant="success" onClick={ShowModalCreate}>
               <FaPlus />
             </Button>
@@ -106,7 +106,7 @@ export default function TransferPage() {
 
       <Modal show={showModalCreate} onHide={CloseModal} centered className="bg-templant">
                 <Modal.Header closeButton >
-                    <Modal.Title>เพิ่มสมาชิก</Modal.Title>
+                    <Modal.Title>เพิ่ม credit</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
 
@@ -159,7 +159,7 @@ export default function TransferPage() {
 
             <Modal show={showModalEdit} onHide={CloseModal} centered className="bg-templant">
             <Modal.Header closeButton >
-                    <Modal.Title>เพิ่มสมาชิก</Modal.Title>
+                    <Modal.Title>แก้ไข credit</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
               
@@ -219,4 +219,4 @@ export default function TransferPage() {
     </ >
   );
 }
-TransferPage.layout = IndexPage;
+CreditPage.layout = IndexPage;
