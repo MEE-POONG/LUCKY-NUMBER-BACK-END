@@ -8,37 +8,37 @@ import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import useAxios from 'axios-hooks'
 
 
-export default function LockNumderPage() {
-    const [{ data: locknumderData }, getLocknumder] = useAxios({ url: '/api/locknumder' })
+export default function LockNumberPage() {
+    const [{ data: locknumberData }, getLocknumber] = useAxios({ url: '/api/locknumber' })
 
-    const [{ data: postData, error: errorMessage, loading: locknumderLoading }, executeLocknumder] = useAxios({ url: '/api/locknumder', method: 'POST' }, { manual: true });
+    const [{ data: postData, error: errorMessage, loading: locknumberLoading }, executeLocknumber] = useAxios({ url: '/api/locknumber', method: 'POST' }, { manual: true });
   
-    const [{ data: locknumderById , loading: locknumderByIdLoading , error: locknumderByIdError},getLocknumderById] = useAxios({},{ manual: true } )
+    const [{ data: locknumberById , loading: locknumberByIdLoading , error: locknumberByIdError},getLocknumberById] = useAxios({},{ manual: true } )
     
-    const [{ loading: updateLocknumderLoading, error: updateLocknumderError }, executeLocknumderPut] = useAxios({},{manual: true})
+    const [{ loading: updateLocknumberLoading, error: updateLocknumberError }, executeLocknumberPut] = useAxios({},{manual: true})
   
-    const [{loading: deleteLocknumderLoading , error: deleteLocknumderError},executeLocknumderDelete]= useAxios({},{manual: true})
+    const [{loading: deleteLocknumberLoading , error: deleteLocknumberError},executeLocknumberDelete]= useAxios({},{manual: true})
   
     const [name, setName] = useState('');
    
     
     useEffect(()=>{
-      setName(locknumderById?.name)
+      setName(locknumberById?.name)
     
-    },[locknumderById])
+    },[locknumberById])
   
     const [showModalCreate, setShowModalCreate] = useState(false);
     const [showModalEdit, setShowModalEdit] = useState(false);
   
     const ShowModalCreate = () => setShowModalCreate(true);
     const ShowModalEdit = async (id) => { 
-     await getLocknumderById({url: '/api/locknumder/'+id,method:'GET'});
+     await getLocknumberById({url: '/api/locknumber/'+id,method:'GET'});
       setShowModalEdit(true);
      }
     const CloseModal = () => { setShowModalCreate(false), setShowModalEdit(false) };
   
-    if ( locknumderLoading || locknumderByIdLoading || updateLocknumderLoading ||deleteLocknumderLoading) return <p>Loading...</p>
-    if (errorMessage || locknumderByIdError || updateLocknumderError ||deleteLocknumderError) return <p>Error!</p>
+    if ( locknumberLoading || locknumberByIdLoading || updateLocknumberLoading ||deleteLocknumberLoading) return <p>Loading...</p>
+    if (errorMessage || locknumberByIdError || updateLocknumberError ||deleteLocknumberError) return <p>Error!</p>
 
 
 
@@ -71,14 +71,14 @@ export default function LockNumderPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {locknumderData?.map((locknumder,index) => (
+                  {locknumberData?.map((locknumber,index) => (
                      <tr key={index}>
-                    <td>{locknumder.name}</td>
+                    <td>{locknumber.name}</td>
                    
                     <td>
-                    <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(locknumder.id)}><FaEdit /></a>
-                                            <a className="btn btn-sm btn-danger me-2" onClick={()=> executeLocknumderDelete({
-                                                url: '/api/locknumder/'+locknumder.id,
+                    <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(locknumber.id)}><FaEdit /></a>
+                                            <a className="btn btn-sm btn-danger me-2" onClick={()=> executeLocknumberDelete({
+                                                url: '/api/locknumber/'+locknumber.id,
                                                 method: 'DELETE'
 
                                             })}><FaTrash /></a>
@@ -112,7 +112,7 @@ export default function LockNumderPage() {
                         ยกเลิก
                     </Button>
                     <Button variant="success" onClick={async event => {
-                        await executeLocknumder({
+                        await executeLocknumber({
                             data: {
                                 name:name,
                                
@@ -151,8 +151,8 @@ export default function LockNumderPage() {
                         ยกเลิก
                     </Button>
                     <Button variant="success" onClick={() => {
-                        executeLocknumderPut({
-                            url: '/api/locknumder/' + locknumderById?.id,
+                        executeLocknumberPut({
+                            url: '/api/locknumber/' + locknumberById?.id,
                             method: 'PUT',
                             data: {
                               name: name,
@@ -180,4 +180,4 @@ export default function LockNumderPage() {
     </>
   );
 }
-LockNumderPage.layout = IndexPage;
+LockNumberPage.layout = IndexPage;
