@@ -53,7 +53,7 @@ export default function LockNumderPage() {
       <Container fluid className=" pt-4 px-4">
         <div className="bg-secondary rounded p-4">
           <div className="d-flex align-items-center justify-content-between mb-4">
-            <h5 className="mb-0 w-m-max me-2">ประเภทหวย</h5>
+            <h5 className="mb-0 w-m-max me-2">เลขอั้น</h5>
             <Button variant="success" onClick={ShowModalCreate}>
               <FaPlus />
             </Button>
@@ -64,7 +64,9 @@ export default function LockNumderPage() {
               <Table className="table table-striped text-start align-middle  align-items-center table-hover ">
                 <thead>
                   <tr>
-                    <th>ชื่อ ประเภทหวย</th>
+                    <th>เพิ่มเลขอั้น
+                        
+                    </th>
                    <th>จัดการ </th>
                   </tr>
                 </thead>
