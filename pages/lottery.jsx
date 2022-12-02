@@ -26,9 +26,9 @@ export default function LotteryPage() {
 
   
   useEffect(()=>{
-    setNumberlotto(creditById?.numberlotto)
-    setPrice(creditById?.price)
-    setType(creditById?.lotteryId)
+    setNumberlotto(lotteryById?.numberlotto)
+    setPrice(lotteryById?.price)
+    setType(lotteryById?.lottotypeId)
   },[lotteryById])
 
   const [showModalCreate, setShowModalCreate] = useState(false);
@@ -55,7 +55,7 @@ export default function LotteryPage() {
       <Container fluid className=" pt-4 px-4">
         <div className="bg-secondary rounded p-4">
           <div className="d-flex align-items-center justify-content-between mb-4">
-            <h5 className="mb-0 w-m-max me-2">ชื่อผู้ใช้</h5>
+            <h5 className="mb-0 w-m-max me-2">เลขหวย</h5>
             <Button variant="success" onClick={ShowModalCreate}>
               <FaPlus />
             </Button>
@@ -76,9 +76,9 @@ export default function LotteryPage() {
                 <tbody>
                   {lotteryData?.map((lottery,index) => (
                      <tr key={index}>
-                    <td>{lottery.addcredit}</td>
-                    <td>{lottery.amount}</td>
-                    <td>{lottery?.user?.username}</td>
+                    <td>{lottery.numberlotto}</td>
+                    <td>{lottery.price}</td>
+                    <td>{lottery?.lottotype?.name}</td>
                     <td>
                     <a className="btn btn-sm btn-success me-2" onClick={() => ShowModalEdit(lottery.id)}><FaEdit/></a>
                                         <a className="btn btn-sm btn-danger me-2" onClick={()=> executeLotteryDelete({
@@ -96,37 +96,37 @@ export default function LotteryPage() {
         </div>
       </Container>
 
-      <Modal show={creditLoading || creditByIdLoading || updateCreditLoading ||deleteCreditLoading}>
+      <Modal show={lotteryLoading || lotteryByIdLoading || updateLotteryLoading ||deleteLotteryLoading}>
         <Modal.Body className='text-center'>Lodeing........</Modal.Body>
       </Modal>
 
-      <Modal  show={errorMessage || creditByIdError || updateCreditError ||deleteCreditError} >
+      <Modal  show={errorMessage || lotteryByIdError || updateLotteryError ||deleteLotteryError} >
         <Modal.Body className='text-center'>Error........</Modal.Body>
       </Modal>
 
       <Modal show={showModalCreate} onHide={CloseModal} centered className="bg-templant">
                 <Modal.Header closeButton >
-                    <Modal.Title>เพิ่มสมาชิก</Modal.Title>
+                    <Modal.Title>เพิ่มหวย</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                    <Form.Select value={username} onChange={event => setUserName(event.target.value)}>
-                            <option value="">username</option>
-                            {userData?.map((user, index) => (
-                                <option key={index} value={user.id}>{user.username}</option>
+                    <Form.Select value={type} onChange={event => setType(event.target.value)}>
+                            <option value="">ประเภทหวย</option>
+                            {lottotypeData?.map((type, index) => (
+                                <option key={index} value={type.id}>{type.name}</option>
                             ))}
                         </Form.Select>
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>credit เข้า</Form.Label>
-                        <Form.Control type="number" value={addcredit} onChange={event => setAddCredit(event.target.value)} />
+                        <Form.Label>เลขหวย</Form.Label>
+                        <Form.Control type="number" value={numberlotto} onChange={event => setNumberlotto(event.target.value)} />
                     </Form.Group>
                     
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>credit ทั้งหมด</Form.Label>
-                        <Form.Control type="number" value={amount} onChange={event => setAmount(event.target.value)} />
+                        <Form.Label>ราคา</Form.Label>
+                        <Form.Control type="number" value={price} onChange={event => setPrice(event.target.value)} />
                     </Form.Group>
                     
                 </Modal.Body>
@@ -135,20 +135,20 @@ export default function LotteryPage() {
                         ยกเลิก
                     </Button>
                     <Button variant="success" onClick={async event => {
-                        await executeCredit({
+                        await executeLottery({
                             data: {                        
-                                userId:username,
-                                addcredit:addcredit,
-                                amount:amount,
+                                lottotypeId:type,
+                                numberlotto:numberlotto,
+                                price:price,
                             }
                         }).then(() => {
                             CloseModal()
                             Promise.all([
-                              setUserName(''),
-                              setAddCredit(''),
-                              setAmount(''),
-                              getCredit(),
-                              getUsers(),
+                                setType(''),
+                                setNumberlotto(''),
+                                setPrice(''),
+                                getLottery(),
+                                getLottotype(),
                             ])
                         })
                     }}>
@@ -159,27 +159,27 @@ export default function LotteryPage() {
 
             <Modal show={showModalEdit} onHide={CloseModal} centered className="bg-templant">
             <Modal.Header closeButton >
-                    <Modal.Title>เพิ่มสมาชิก</Modal.Title>
+                    <Modal.Title>แก้ไขหวย</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
               
                 <Form.Group controlId="formFile" className="mb-3">
-                    <Form.Select value={username} onChange={event => setUserName(event.target.value)}  >
-                            <option value="">username</option>
-                            {userData?.map((user, index) => (
-                                <option key={index} value={user.id}>{user.username}</option>
+                    <Form.Select value={type} onChange={event => setType(event.target.value)}>
+                            <option value="">ประเภทหวย</option>
+                            {lottotypeData?.map((type, index) => (
+                                <option key={index} value={type.id}>{type.name}</option>
                             ))}
                         </Form.Select>
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>credit เข้า</Form.Label>
-                        <Form.Control type="number" value={addcredit} onChange={event => setAddCredit(event.target.value)} />
+                        <Form.Label>เลขหวย</Form.Label>
+                        <Form.Control type="number" value={numberlotto} onChange={event => setNumberlotto(event.target.value)} />
                     </Form.Group>
                     
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>credit ทั้งหมด</Form.Label>
-                        <Form.Control type="number" value={amount} onChange={event => setAmount(event.target.value)} />
+                        <Form.Label>ราคา</Form.Label>
+                        <Form.Control type="number" value={price} onChange={event => setPrice(event.target.value)} />
                     </Form.Group>
     
                 </Modal.Body>
@@ -188,21 +188,21 @@ export default function LotteryPage() {
                         ยกเลิก
                     </Button>
                     <Button variant="success" onClick={() => {
-                        executeCreditPut({
-                            url: '/api/credit/' + creditById?.id,
+                        executeLotteryPut({
+                            url: '/api/lottery/' + lotteryById?.id,
                             method: 'PUT',
                             data: {
-                                userId:username,
-                                addcredit:addcredit,
-                                amount:amount,
+                                lottotypeId:type,
+                                numberlotto:numberlotto,
+                                price:price,
                             }
                           }).then(() => {
                             Promise.all([
-                                setUserName(''),
-                                setAddCredit(''),
-                                setAmount(''),
-                                getCredit(),
-                                getUsers(),
+                                setType(''),
+                                setNumberlotto(''),
+                                setPrice(''),
+                                getLottery(),
+                                getLottotype(),
                             ]).then(() => {
                                 CloseModal()
                             })

@@ -94,7 +94,9 @@ model Orderlotto {
   id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   lotteryid  String?   @db.Uuid
   userId     String?   @db.Uuid
+  amount     Int?
   total      Int?
+  status     String?
   createdAt  DateTime? @default(now())
   deleted_at DateTime? @map("deleted_at")
   updatedAt  DateTime? @updatedAt
