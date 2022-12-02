@@ -51,35 +51,41 @@ export default function TheSlideNav() {
             </div>
           </div>
           <div className="navbar-nav w-100">
-            <Link href="/"
-                  className={
+            <Link href="/">
+              <a className={
                     asPath === "/"
-                      ? "active font-menu font-bold mx-auto"
-                      : " font-menu font-bold mx-auto"
+                      ? "nav-item nav-link active"
+                      : "nav-link"
                   }>
-              <a className="nav-item nav-link active">
-                <i className="me-2">
+                <i className="me-2 ">
                   <FaTachometerAlt />
                 </i>
                 Dashboard
               </a>
             </Link>
+
             <Dropdown bsPrefix="nav-item">
-              <Dropdown.Toggle className="nav-link" variant="">
-                <i className="me-2">
+              <Dropdown.Toggle className={
+                    asPath === "/orders/orderslist"
+                      ? "nav-link active"
+                      : "nav-link"
+                  } variant="">
+                <i className="me-2 ">
                   <BsFillBagFill/>
                 </i>
                 จัดการออเดอร์หวย
               </Dropdown.Toggle>
               <Dropdown.Menu className="bg-transparent border-0">
                 <Link id="orderslist" href="/orders/orderslist">
-                  <a className="dropdown-item">รายการสั่งซื้อหวย</a>
+                  <a className="dropdown-item ">รายการสั่งซื้อหวย</a>
                 </Link>
               </Dropdown.Menu>
             </Dropdown>
 
             <Dropdown bsPrefix="nav-item">
-              <Dropdown.Toggle className="nav-link" variant="">
+              <Dropdown.Toggle className={asPath === "/lottery"|| asPath === "/locknumber" || asPath === "/lottotype"
+                      ? "nav-link active"
+                      : "nav-link"} variant="">
                 <i className="me-2">
                   <FaShoppingCart/>
                 </i>
@@ -99,7 +105,9 @@ export default function TheSlideNav() {
             </Dropdown>
             
             <Dropdown bsPrefix="nav-item">
-              <Dropdown.Toggle className="nav-link" variant="">
+              <Dropdown.Toggle className={asPath === "/user"|| asPath === "/banks" || asPath === "/credit"
+                      ? "nav-link active"
+                      : "nav-link"} variant="">
                 <i className="me-2">
                   <FaUser/>
                 </i>
@@ -119,7 +127,9 @@ export default function TheSlideNav() {
             </Dropdown>
 
             <Dropdown bsPrefix="nav-item">
-              <Dropdown.Toggle className="nav-link" variant="">
+              <Dropdown.Toggle className={asPath === "/about"|| asPath === "/contact" || asPath === "/sliderpicture"
+                      ? "nav-link active"
+                      : "nav-link"} variant="">
                 <i className="me-2">
                   <FaLaptop />
                 </i>
