@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import IndexPage from "components/layouts/IndexPage";
-import { useRouter } from 'next/router';
 import { Container, Table, Button, Form, OverlayTrigger, Badge, Modal } from 'react-bootstrap';
 import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import useAxios from 'axios-hooks'
@@ -26,13 +25,11 @@ export default function BanksPage() {
 
   
   useEffect(()=>{
-    setUserName(banksById?.userId)
-    setAccountname(banksById?.accountname)
-    setNamebank(banksById?.namebank)
-    setNumberbank(banksById?.numberbank)
-    
-
-  },[banksById])
+    setUserName(banksById?.userId);
+    setAccountname(banksById?.accountname);
+    setNamebank(banksById?.namebank);
+    setNumberbank(banksById?.numberbank);
+  },[banksById]);
 
   const [showModalCreate, setShowModalCreate] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
@@ -43,9 +40,6 @@ export default function BanksPage() {
     setShowModalEdit(true);
    }
   const CloseModal = () => { setShowModalCreate(false), setShowModalEdit(false) };
-
-  // if ( banksLoading || banksByIdLoading || updateBanksLoading ||deleteBanksLoading) return <p>Loading...</p>
-  // if (errorMessage || banksByIdError || updateBanksError ||deleteBanksError) return <p>Error!</p>
 
   return (
     < >
@@ -72,9 +66,9 @@ export default function BanksPage() {
 
                 <thead>
                   <tr>
-                    <th >ชื่อเจ้าของบัญชี</th>
+                    <th >ชื่อผู้ใช้</th>
                     <th >ธนาคาร</th>
-                    <th >ชื่อบัญชีธนาคาร</th>
+                    <th >ชื่อเจ้าของบัญชี</th>
                     <th >เลขบัญชีธนาคาร</th>
                     <th >จัดการ</th>
                   </tr>
@@ -91,7 +85,6 @@ export default function BanksPage() {
                                             <a className="btn btn-sm btn-danger me-2" onClick={()=> executeBanksDelete({
                                                 url: '/api/banks/'+banks.id,
                                                 method: 'DELETE'
-
                                             })}><FaTrash /></a>
                     </td>
                   </tr>
@@ -119,7 +112,7 @@ export default function BanksPage() {
 
                     <Form.Group controlId="formFile" className="mb-3">
                     <Form.Select value={username} onChange={event => setUserName(event.target.value)}>
-                            <option value="">ชื่อเจ้าของบัญชี</option>
+                            <option value="">ชื่อผู้ใช้</option>
                             {userData?.map((user, index) => (
                                 <option key={index} value={user.id}>{user.username}</option>
                             ))}
@@ -128,19 +121,19 @@ export default function BanksPage() {
 
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>ธนาคาร</Form.Label>
-                        <Form.Control type="number" value={accountname} onChange={event => setAccountname(event.target.value)} />
+                        <Form.Control type="text" value={accountname} onChange={event => setAccountname(event.target.value)} />
                     </Form.Group>
                     
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อบัญชีธนาคาร</Form.Label>
-                        <Form.Control type="number" value={namebank} onChange={event => setNamebank(event.target.value)} />
+                        <Form.Label>ชื่อเจ้าของบัญชี</Form.Label>
+                        <Form.Control type="text" value={namebank} onChange={event => setNamebank(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>เลขบัญชีธนาคาร</Form.Label>
-                        <Form.Control type="number" value={numberbank} onChange={event => setNumberbank(event.target.value)} />
+                        <Form.Control type="text" value={numberbank} onChange={event => setNumberbank(event.target.value)} />
                     </Form.Group>
-                    
+
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={CloseModal}>
@@ -154,7 +147,7 @@ export default function BanksPage() {
                                 namebank: namebank,
                                 numberbank: numberbank,
  
-                            }
+                            },
                         }).then(() => {
                             Promise.all([
                               setUserName(''),
@@ -173,14 +166,22 @@ export default function BanksPage() {
                 </Modal.Footer>
             </Modal>
 
+              <Modal show={banksLoading || banksByIdLoading || updateBanksLoading ||deleteBanksLoading}>
+        <Modal.Body className='text-center'>Loading........</Modal.Body>
+      </Modal>
+
+      <Modal  show={errorMessage || banksByIdError || updateBanksError ||deleteBanksError} >
+        <Modal.Body className='text-center'>Error........</Modal.Body>
+      </Modal>
+
             <Modal show={showModalEdit} onHide={CloseModal} centered className="bg-templant">
             <Modal.Header closeButton >
-                    <Modal.Title>เพิ่มสมาชิก</Modal.Title>
+                    <Modal.Title>แก้ไขข้อมูลบัญชี</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
               
                 <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อเจ้าของบัญชี</Form.Label>
+                        <Form.Label>ชื่อผู้ใช้</Form.Label>
                         <Form.Control type="text" value={username} onChange={event => setUserName(event.target.value)} readOnly />
                     </Form.Group>
 
@@ -190,7 +191,7 @@ export default function BanksPage() {
                     </Form.Group>
                     
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อบัญชีธนาคาร</Form.Label>
+                        <Form.Label>ชื่อเจ้าของบัญชี</Form.Label>
                         <Form.Control type="text" value={namebank} onChange={event => setNamebank(event.target.value)} />
                     </Form.Group>
 
@@ -213,7 +214,7 @@ export default function BanksPage() {
                               accountname:accountname,
                               namebank: namebank,
                               numberbank: numberbank,
-                            }
+                            },
                           }).then(() => {
                             Promise.all([
                               setUserName(''),
@@ -221,7 +222,7 @@ export default function BanksPage() {
                               setNamebank(''),
                               setNumberbank(''),
                               getBanks(),
-                              getUser()
+                              getUser(),
                             ]).then(() => {
                                 CloseModal()
                             })

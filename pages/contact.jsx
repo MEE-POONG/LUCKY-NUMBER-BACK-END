@@ -2,33 +2,15 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import IndexPage from "components/layouts/IndexPage";
 // import { useRouter } from 'next/router';
-import {
-  Container,
-  Image,
-  Table,
-  Button,
-  Form,
-  OverlayTrigger,
-  Badge,
-  Modal,
-  Row,
-} from "react-bootstrap";
+import {Container,Image,Table,Button,Form,OverlayTrigger,Badge, Modal,Row,} from "react-bootstrap";
 // import Editor from '@/components/Ckeditor/Editor';
 import useAxios from "axios-hooks";
 import { FaReply, FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 
 export default function ContactPage() {
-  const [{ data: contactData, loading, error }, getContact] = useAxios({
-    url: "/api/contact",
-  });
-  const [
-    { data: contactById, loading: contactByIdLoading, error: contactByIdError },
-    getContactById,
-  ] = useAxios({}, { manual: true });
-  const [
-    { loading: updateContactLoading, error: updateContactError },
-    executeContactPut,
-  ] = useAxios({}, { manual: true });
+  const [{ data: contactData, loading, error }, getContact] = useAxios({url: "/api/contact",});
+  const [{ data: contactById, loading: contactByIdLoading, error: contactByIdError }, getContactById,] = useAxios({}, { manual: true });
+  const [{ loading: updateContactLoading, error: updateContactError }, executeContactPut, ] = useAxios({}, { manual: true });
 
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
