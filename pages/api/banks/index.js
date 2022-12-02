@@ -21,7 +21,7 @@ export default async function handler(req, res) {
                         accountname: parseInt(req.body.accountname),
                         namebank: parseInt(req.body.namebank),
                         numberbank: parseInt(req.body.numberbank),
-                        userId: req.body.userId,        
+                        userId: req.body.userId,          
                     }   
                 })
                 res.status(201).json({ success: true })
